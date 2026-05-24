@@ -1,36 +1,47 @@
-# [Project name]
+# Axyomis-X
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A high-fidelity biomedical OS and scientific intelligence platform — explore the cosmos, anatomy, and pathology through AI chat, 3D visualization, quizzes, and educational videos.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/axyomis run dev` — run the frontend (Vite, port assigned via PORT env)
+- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Frontend: React 19 + Vite 7 + TailwindCSS v4 + motion
+- AI: Google Gemini via `@google/genai` (client-side, key injected at build time)
+- Auth & DB: Firebase Auth + Firestore (`firebase-applet-config.json` at artifact root)
+- API: Express 5 (YouTube proxy routes at `/api/youtube` and `/api/youtube-multilingual`)
+- 3D Globe: `cobe`
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- Frontend: `artifacts/axyomis/src/`
+- Firebase config: `artifacts/axyomis/firebase-applet-config.json`
+- Quiz data: `artifacts/axyomis/src/data/`
+- YouTube proxy: `artifacts/api-server/src/routes/youtube.ts`
+- OpenAPI spec: `lib/api-spec/openapi.yaml`
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Gemini API key is injected into the client bundle via Vite `define` (original AI Studio pattern). Key must be set as `GEMINI_API_KEY` secret.
+- YouTube API proxy lives in the shared Express api-server to keep the key server-side.
+- Firebase config is committed as JSON (contains public Firebase keys — not secrets, this is intentional per Firebase's client-side auth model).
+- The `motion` package (v12) is used for animations — not `framer-motion` (different subpath exports).
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Lyra AI chat (Gemini-powered) with voice, image analysis, math rendering, Mermaid diagrams
+- Wikipedia-powered topic cards for Science, Biology, Physics, Chemistry, Diseases
+- Interactive quiz engine with 3 difficulty levels
+- YouTube educational video search (multilingual: English, Hindi, Nepali)
+- Firebase Auth (Google + email/password) with user profiles
+- 3D globe visualization, animated hero, PWA support
 
 ## User preferences
 
@@ -38,7 +49,10 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- `GEMINI_API_KEY` must be set as a secret for the AI chat to work
+- WebGL errors in the preview pane are expected (no GPU in headless env) — works fine for real users
+- YouTube features require `VITE_YOUTUBE_API_KEY` or `YOUTUBE_API_KEY` secret
+- After each OpenAPI spec change, re-run codegen before using the updated types
 
 ## Pointers
 

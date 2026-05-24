@@ -1,0 +1,101 @@
+import { Router } from "express";
+import axios from "axios";
+
+const router = Router();
+
+router.post("/youtube-multilingual", async (req, res) => {
+  try {
+    const { topic, level } = req.body as { topic: string; level?: string };
+    const apiKey = process.env.VITE_YOUTUBE_API_KEY || process.env.YOUTUBE_API_KEY;
+    if (!apiKey) {
+      res.status(400).json({ error: "YouTube API Key not configured" });
+      return;
+    }
+
+    const levelStr = level ? ` ${level} level` : "";
+
+    const fetchLang = async (langQuery: string) => {
+      const response = await axios.get(
+        "https://www.googleapis.com/youtube/v3/search",
+        {
+          params: {
+            part: "snippet",
+            maxResults: 6,
+            q: `${topic}${levelStr} ${langQuery}`,
+            type: "video",
+            key: apiKey,
+            videoEmbeddable: "true",
+            safeSearch: "strict",
+            order: "relevance",
+          },
+        },
+      );
+      const items = response.data.items || [];
+      return items.map((item: any) => ({
+        id: item.id.videoId,
+        title: item.snippet.title,
+        thumbnail: item.snippet.thumbnails?.medium?.url || "",
+        channelTitle: item.snippet.channelTitle,
+        publishedAt: item.snippet.publishedAt,
+        description: item.snippet.description || "",
+      }));
+    };
+
+    const [english, hindi, nepali] = await Promise.allSettled([
+      fetchLang("educational lecture study"),
+      fetchLang("शिक्षा हिंदी"),
+      fetchLang("शिक्षा नेपाली"),
+    ]);
+
+    res.json({
+      english:
+        english.status === "fulfilled" ? english.value : [],
+      hindi: hindi.status === "fulfilled" ? hindi.value : [],
+      nepali: nepali.status === "fulfilled" ? nepali.value : [],
+    });
+  } catch (e: any) {
+    req.log.error({ err: e }, "YouTube multilingual proxy error");
+    res.status(500).json({ error: "Failed to fetch YouTube videos" });
+  }
+});
+
+router.post("/youtube", async (req, res) => {
+  try {
+    const { query } = req.body as { query: string };
+    const apiKey = process.env.VITE_YOUTUBE_API_KEY || process.env.YOUTUBE_API_KEY;
+    if (!apiKey) {
+      res.status(400).json({ error: "YouTube API Key not configured" });
+      return;
+    }
+
+    const response = await axios.get(
+      "https://www.googleapis.com/youtube/v3/search",
+      {
+        params: {
+          part: "snippet",
+          q: `${query} educational lecture study class`,
+          maxResults: 25,
+          type: "video",
+          videoEmbeddable: "true",
+          key: apiKey,
+        },
+      },
+    );
+
+    const items = response.data.items || [];
+    const videos = items.map((item: any) => ({
+      id: item.id.videoId,
+      title: item.snippet.title,
+      thumbnail: item.snippet.thumbnails?.medium?.url || "",
+      channelTitle: item.snippet.channelTitle,
+      publishedAt: item.snippet.publishedAt,
+      description: item.snippet.description || "",
+    }));
+    res.json({ videos });
+  } catch (e: any) {
+    req.log.error({ err: e }, "YouTube proxy error");
+    res.status(500).json({ error: "Failed to fetch YouTube videos" });
+  }
+});
+
+export default router;

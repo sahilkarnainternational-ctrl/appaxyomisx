@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Axyomis-X"
+version = "1.0.0"
+id = "artifacts/axyomis"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24737
+
+[services.development]
+run = "pnpm --filter @workspace/axyomis run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/axyomis", "run", "build" ]
+publicDir = "artifacts/axyomis/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24737"
+BASE_PATH = "/"

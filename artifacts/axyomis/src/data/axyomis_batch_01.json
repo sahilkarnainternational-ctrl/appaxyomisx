@@ -1,0 +1,152 @@
+[
+    {
+        "id": "axyomis_phy_001",
+        "category": "physics",
+        "subcategory": "quantum_mechanics",
+        "difficulty": "advanced",
+        "question": "What does the square of the absolute value of the wave function (|Ψ|²) represent according to Born's interpretation?",
+        "options": [
+            "The exact kinetic energy vector of the localized system",
+            "The probability density of locating a particle within a given space-time parameter",
+            "The momentum flux tensor across a non-relativistic boundary",
+            "The expectation value of the Hamiltonian operator field"
+        ],
+        "correct_index": 1,
+        "explanation": "According to the Born interpretation, the probability density of finding a particle at a given point is directly proportional to the square of the magnitude of its wave function at that point."
+    },
+    {
+        "id": "axyomis_phy_002",
+        "category": "physics",
+        "subcategory": "quantum_mechanics",
+        "difficulty": "mid-tier",
+        "question": "Which of the following phenomena provides the most direct evidence for the quantization of light energy?",
+        "options": [
+            "Diffraction of light through a double slit",
+            "The continuous spectrum of blackbody radiation",
+            "The photoelectric effect",
+            "The Doppler effect for electromagnetic waves"
+        ],
+        "correct_index": 2,
+        "explanation": "The photoelectric effect demonstrates that light energy is absorbed in discrete quanta (photons) proportional to frequency, rather than continuously."
+    },
+    {
+        "id": "axyomis_phy_003",
+        "category": "physics",
+        "subcategory": "thermodynamics",
+        "difficulty": "advanced",
+        "question": "In the context of statistical mechanics, what does the partition function (Z) fundamentally normalize?",
+        "options": [
+            "The thermal conductivity across a gradient",
+            "The total energy of an isolated microcanonical ensemble",
+            "The probabilities of the system occupying its accessible microstates",
+            "The rate of entropy generation in an irreversible process"
+        ],
+        "correct_index": 2,
+        "explanation": "The partition function Z is the sum of the Boltzmann factors for all possible states, serving as a normalization constant so that the microstate probabilities sum to 1."
+    },
+    {
+        "id": "axyomis_phy_004",
+        "category": "physics",
+        "subcategory": "electromagnetism",
+        "difficulty": "entry-level",
+        "question": "According to Faraday's law of induction, what induces an electromotive force (EMF) in a closed loop?",
+        "options": [
+            "A constant strong magnetic field",
+            "A changing magnetic flux through the loop over time",
+            "The physical translation of the loop parallel to a uniform field",
+            "A static separation of electric charges"
+        ],
+        "correct_index": 1,
+        "explanation": "Faraday's law states that the induced EMF is directly proportional to the negative rate of change of magnetic flux through the loop."
+    },
+    {
+        "id": "axyomis_phy_005",
+        "category": "physics",
+        "subcategory": "classical_dynamics",
+        "difficulty": "mid-tier",
+        "question": "For a system defined by a Lagrangian L(q, q̇, t), if the Lagrangian does not explicitly depend on coordinates q_i (i.e., ∂L/∂q_i = 0), what is the resulting consequence?",
+        "options": [
+            "The generalized force associated with q_i is maximized",
+            "The generalized momentum p_i conjugate to q_i is conserved",
+            "The system experiences undamped harmonic oscillation",
+            "The Hamiltonian of the system becomes identically zero"
+        ],
+        "correct_index": 1,
+        "explanation": "By the Euler-Lagrange equations, if ∂L/∂q_i = 0, then d/dt(∂L/∂q̇_i) = d/dt(p_i) = 0, meaning the conjugate momentum p_i is a constant of motion."
+    },
+    {
+        "id": "axyomis_phy_006",
+        "category": "physics",
+        "subcategory": "relativistic_physics",
+        "difficulty": "advanced",
+        "question": "In special relativity, how does the spacetime interval (Δs²) between two events transform under a Lorentz transformation?",
+        "options": [
+            "It undergoes length contraction dependent on relative velocity",
+            "It experiences time dilation proportional to the Lorentz factor γ",
+            "It remains invariant across all inertial reference frames",
+            "It shifts linearly parallel to the axis of relative motion"
+        ],
+        "correct_index": 2,
+        "explanation": "The spacetime interval is a relativistic invariant; it yields the same value for all observers regardless of their relative inertial motion."
+    },
+    {
+        "id": "axyomis_phy_007",
+        "category": "physics",
+        "subcategory": "nuclear_physics",
+        "difficulty": "mid-tier",
+        "question": "Which fundamental force is primarily responsible for holding quarks together to form protons and neutrons?",
+        "options": [
+            "The electromagnetic force",
+            "The weak nuclear force",
+            "The strong nuclear force",
+            "Gravitational force"
+        ],
+        "correct_index": 2,
+        "explanation": "The strong nuclear force, mediated by gluons, binds quarks together into hadrons like protons and neutrons, overcoming electromagnetic repulsion."
+    },
+    {
+        "id": "axyomis_phy_008",
+        "category": "physics",
+        "subcategory": "quantum_mechanics",
+        "difficulty": "entry-level",
+        "question": "What is the primary implication of the Heisenberg Uncertainty Principle?",
+        "options": [
+            "Energy and mass are interchangeable quantities",
+            "It is impossible to simultaneously know both the exact position and exact momentum of a particle",
+            "The speed of light is the maximum universe speed limit",
+            "Electrons orbit the nucleus in strictly defined circular paths"
+        ],
+        "correct_index": 1,
+        "explanation": "The Heisenberg Uncertainty Principle states that the product of the uncertainties in position and momentum cannot be less than a fundamental quantum limit (ℏ/2)."
+    },
+    {
+        "id": "axyomis_phy_009",
+        "category": "physics",
+        "subcategory": "thermodynamics",
+        "difficulty": "mid-tier",
+        "question": "Which of the following correctly defines the entropy change of an ideal gas during an isothermal expansion?",
+        "options": [
+            "It decreases due to constant temperature",
+            "It is exactly zero because internal energy is conserved",
+            "It increases as the volume expands, following ΔS = nRln(V2/V1)",
+            "It fluctuates sinusoidally depending on pressure"
+        ],
+        "correct_index": 2,
+        "explanation": "In an isothermal expansion, temperature is constant and heat is added to do work. The entropy increases as the number of accessible spatial microstates increases with volume."
+    },
+    {
+        "id": "axyomis_phy_010",
+        "category": "physics",
+        "subcategory": "electromagnetism",
+        "difficulty": "advanced",
+        "question": "In Maxwell's equations, what is the physical significance of the displacement current term (∂D/∂t) added by Maxwell to Ampère's Law?",
+        "options": [
+            "It accounts for magnetic monopoles in a vacuum",
+            "It explains the resistance of conductors at high frequencies",
+            "It allows a changing electric field to induce a magnetic field, preserving charge conservation",
+            "It cancels out the Biot-Savart scalar field in dielectrics"
+        ],
+        "correct_index": 2,
+        "explanation": "Maxwell introduced the displacement current to satisfy the continuity equation for charge delivery. It physically means a time-varying electric field acts as a source for a magnetic field."
+    }
+]
