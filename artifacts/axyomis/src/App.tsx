@@ -712,7 +712,7 @@ export default function App() {
         startInConversationMode={talkModeEnabled}
       />
       <Profile isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
-      <AITutor isOpen={isAITutorOpen} onClose={() => setIsAITutorOpen(false)} />
+      <AITutor isOpen={isAITutorOpen} onClose={() => setIsAITutorOpen(false)} onOpenChat={() => { setIsAITutorOpen(false); setIsChatOpen(true); }} />
       <OnboardingFlow isOpen={isOnboardingOpen} onClose={() => setIsOnboardingOpen(false)} />
       <OriginDialog 
         isOpen={isMatrixOpen} 

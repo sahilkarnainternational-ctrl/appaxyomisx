@@ -42,6 +42,7 @@ export const ReviewSection: React.FC = () => {
   const [text, setText] = useState('');
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [submitError, setSubmitError] = useState('');
 
   const avgRating = reviews.length
     ? reviews.reduce((a, r) => a + r.rating, 0) / reviews.length
@@ -75,6 +76,7 @@ export const ReviewSection: React.FC = () => {
     e.preventDefault();
     if (!uid || !text.trim() || rating < 1) return;
     setSaving(true);
+    setSubmitError('');
     try {
       await submitReview(uid, {
         displayName: displayName || 'Anonymous',
@@ -87,7 +89,9 @@ export const ReviewSection: React.FC = () => {
       const mine = await getUserReview(uid);
       setMyReview(mine);
       setIsWriting(false);
-    } catch {}
+    } catch (err: any) {
+      setSubmitError('Could not save your review. Please check your connection and try again.');
+    }
     setSaving(false);
   };
 
@@ -249,6 +253,11 @@ export const ReviewSection: React.FC = () => {
                   />
                   <p className="text-[9px] text-slate-600 text-right mt-1">{text.length}/500</p>
                 </div>
+                {submitError && (
+                  <div className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-[11px] font-bold">
+                    {submitError}
+                  </div>
+                )}
                 <div className="flex gap-3">
                   <button type="button" onClick={() => setIsWriting(false)}
                     className="flex-1 py-3 bg-white/5 border border-white/10 rounded-2xl text-slate-400 font-black uppercase tracking-widest text-[10px] hover:bg-white/10 transition-colors">

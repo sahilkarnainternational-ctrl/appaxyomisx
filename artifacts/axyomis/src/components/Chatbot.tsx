@@ -505,6 +505,7 @@ const RobotIcon = ({ glow = false, variant = 'button' }: { glow?: boolean; varia
           {/* Eye Visors */}
           <motion.ellipse 
             cx="17" cy="18" rx="2.5" ry="1.5" 
+            initial={{ opacity: 1, scaleY: 1 }}
             animate={{ 
               opacity: glow ? [0.4, 1, 0.4] : 1, 
               scaleY: [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1] 
@@ -518,6 +519,7 @@ const RobotIcon = ({ glow = false, variant = 'button' }: { glow?: boolean; varia
           />
           <motion.ellipse 
             cx="23" cy="18" rx="2.5" ry="1.5" 
+            initial={{ opacity: 1, scaleY: 1 }}
             animate={{ 
               opacity: glow ? [0.4, 1, 0.4] : 1, 
               scaleY: [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1] 
@@ -1463,7 +1465,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     className="p-2.5 hover:bg-white/5 rounded-xl text-slate-500 hover:text-white transition-all"
                   >
-                    <motion.div animate={{ rotate: isSidebarOpen ? 0 : 180 }}>
+                    <motion.div initial={{ rotate: 180 }} animate={{ rotate: isSidebarOpen ? 0 : 180 }}>
                       <ChevronRight className="w-6 h-6" />
                     </motion.div>
                   </button>

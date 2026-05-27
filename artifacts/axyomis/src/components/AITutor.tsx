@@ -91,9 +91,10 @@ async function generateQuiz(subject: string, chapter: string, classLevel: string
 interface AITutorProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenChat?: () => void;
 }
 
-export const AITutor: React.FC<AITutorProps> = ({ isOpen, onClose }) => {
+export const AITutor: React.FC<AITutorProps> = ({ isOpen, onClose, onOpenChat }) => {
   const { classLevel, subjects, isPremium, isTrialActive, uid, studentProfile } = useUser() as any;
   const canAccessPremium = isPremium || isTrialActive;
   const [selectedSubject, setSelectedSubject] = useState<string>('');
@@ -108,6 +109,7 @@ export const AITutor: React.FC<AITutorProps> = ({ isOpen, onClose }) => {
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [showSidebar, setShowSidebar] = useState(true);
   const [factOfDay, setFactOfDay] = useState<string>('');
+  const [completedChapters, setCompletedChapters] = useState<Set<string>>(new Set());
   const contentRef = useRef<HTMLDivElement>(null);
   const effectiveSubjects: string[] = subjects.length > 0 ? subjects : ['Physics', 'Biology', 'Chemistry'];
   const effectiveClass: string = classLevel || 'Grade 10';
@@ -170,6 +172,7 @@ export const AITutor: React.FC<AITutorProps> = ({ isOpen, onClose }) => {
     try {
       const lesson = await generateLesson(selectedSubject, chapter, effectiveClass);
       setLessonContent(lesson);
+      setCompletedChapters(prev => { const n = new Set(prev); n.add(`${selectedSubject}::${chapter}`); return n; });
     } catch {
       setLessonContent('Failed to load lesson. Please try again.');
     }
@@ -281,8 +284,18 @@ export const AITutor: React.FC<AITutorProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              {onOpenChat && (
+                <button
+                  onClick={onOpenChat}
+                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-300 hover:bg-violet-500/20 transition-all"
+                  title="Open Astra chat"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  <span className="text-[9px] font-black uppercase tracking-widest">Ask Astra</span>
+                </button>
+              )}
               {!canAccessPremium && (
-                <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
+                <div className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
                   <Crown className="w-3 h-3 text-amber-400" />
                   <span className="text-[9px] font-black uppercase tracking-widest text-amber-400">Upgrade for full access</span>
                 </div>
@@ -326,19 +339,27 @@ export const AITutor: React.FC<AITutorProps> = ({ isOpen, onClose }) => {
                   </div>
                   {/* Chapter list */}
                   <div className="flex-1 overflow-y-auto p-3">
-                    <p className="text-[8px] font-black uppercase tracking-widest text-cyan-500/40 mb-2 px-1">Chapters</p>
+                    <div className="flex items-center justify-between mb-2 px-1">
+                      <p className="text-[8px] font-black uppercase tracking-widest text-cyan-500/40">Chapters</p>
+                      {chapters.length > 0 && (
+                        <span className="text-[8px] font-black text-green-400/60 uppercase tracking-widest">
+                          {chapters.filter(ch => completedChapters.has(`${selectedSubject}::${ch}`)).length}/{chapters.length}
+                        </span>
+                      )}
+                    </div>
                     <div className="space-y-0.5">
                       {chapters.map((ch, idx) => {
                         const isChapterOfDay = ch === chapterOfDay;
+                        const isDone = completedChapters.has(`${selectedSubject}::${ch}`);
                         return (
                           <button
                             key={ch}
                             onClick={() => loadChapter(ch)}
-                            className={`w-full text-left px-2.5 py-2 rounded-xl text-[10px] transition-all flex items-center gap-1.5 group ${selectedChapter === ch ? 'bg-cyan-500/15 border border-cyan-500/25 text-cyan-300 font-bold' : 'text-slate-500 hover:text-white hover:bg-white/[0.04]'}`}
+                            className={`w-full text-left px-2.5 py-2 rounded-xl text-[10px] transition-all flex items-center gap-1.5 group ${selectedChapter === ch ? 'bg-cyan-500/15 border border-cyan-500/25 text-cyan-300 font-bold' : isDone ? 'text-slate-400 hover:text-white hover:bg-white/[0.04]' : 'text-slate-500 hover:text-white hover:bg-white/[0.04]'}`}
                           >
-                            <span className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 text-[8px] font-black ${selectedChapter === ch ? 'bg-cyan-500/20 text-cyan-400' : 'bg-white/5 text-slate-600'}`}>{idx + 1}</span>
+                            <span className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 text-[8px] font-black ${isDone ? 'bg-green-500/20 text-green-400' : selectedChapter === ch ? 'bg-cyan-500/20 text-cyan-400' : 'bg-white/5 text-slate-600'}`}>{isDone ? '✓' : idx + 1}</span>
                             <span className="truncate flex-1">{ch}</span>
-                            {isChapterOfDay && <Star className="w-2.5 h-2.5 text-amber-400 flex-shrink-0" />}
+                            {isChapterOfDay && !isDone && <Star className="w-2.5 h-2.5 text-amber-400 flex-shrink-0" />}
                           </button>
                         );
                       })}
