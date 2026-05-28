@@ -1,0 +1,30 @@
+# Dev files
+*.log
+*.md
+!.vercel/README.md
+
+# Git
+.git
+.gitignore
+
+# Replit-specific
+.replit
+.replit-artifact
+breakpoints*
+
+# Tests (if any)
+__tests__
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Cache
+node_modules/.cache
+.eslintcache
+*.tsbuildinfo
+
+# Large data
+*.mp4
+*.mov
+*.avi

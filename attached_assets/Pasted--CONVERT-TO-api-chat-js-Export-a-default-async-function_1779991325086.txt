@@ -1,0 +1,90 @@
+✅ CONVERT TO:
+/api/chat.js
+Export a default async function (req, res)
+Handle POST only
+No Express dependency unless wrapped correctly
+Example REQUIRED FORMAT:
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  try {
+    // logic
+    res.status(200).json({ reply: "ok" });
+  } catch (err) {
+    res.status(500).json({ error: "Internal error" });
+  }
+}
+====================================================
+AI API RULES
+USE ONLY GROQ API
+NO Gemini
+NO Claude
+NO OpenAI default endpoint
+Groq base URL MUST be:
+https://api.groq.com/openai/v1
+Environment variable:
+GROQ_KEY
+NEVER hardcode keys
+====================================================
+FRONTEND RULES
+All fetch calls must be:
+fetch("/api/chat", ...)
+NO:
+localhost
+127.0.0.1
+process.env in frontend
+Frontend must build with:
+npm run build
+====================================================
+PROJECT STRUCTURE (REQUIRED)
+Your final output MUST match one of these:
+OPTION A (Static + Serverless):
+/
+├─ api/
+│ └─ chat.js
+├─ public/
+│ └─ index.html
+├─ package.json
+└─ vercel.json (if needed)
+OPTION B (Next.js):
+/
+├─ pages/
+│ ├─ index.js
+│ └─ api/
+│ └─ chat.js
+├─ package.json
+└─ next.config.js
+====================================================
+VERCEL CONFIG
+If needed, include a vercel.json with:
+Correct build command
+Correct output directory
+No custom server
+====================================================
+ENVIRONMENT VARIABLES
+Assume:
+GROQ_KEY is set in Vercel dashboard
+DO NOT reference .env files in runtime
+====================================================
+COMMON FAILURE FIXES YOU MUST HANDLE
+You MUST automatically fix:
+"Function invocation timeout"
+"Module not found"
+"Cannot find app.listen"
+"Unexpected token"
+"process is not defined"
+"CORS errors"
+"Fetch failed"
+"Build failed"
+"Dynamic require errors"
+====================================================
+FINAL OUTPUT REQUIREMENT
+Return ONLY:
+Final corrected folder structure
+Final corrected files (FULL CODE)
+Nothing else
+DO NOT explain.
+DO NOT comment.
+DO NOT ask questions.
