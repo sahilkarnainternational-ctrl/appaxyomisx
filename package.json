@@ -9,7 +9,7 @@
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
     "vercel-build": "pnpm run build:frontend",
     "build:frontend": "cd artifacts/axyomis && pnpm exec vite build --config ../../vite.vercel.config.ts",
-    "start": "npx serve -s artifacts/axyomis/dist/public -p ${PORT:-3000} --single"
+    "start": "serve -s artifacts/mockup-sandbox/dist -p ${PORT:-10000}"
   },
   "private": true,
   "devDependencies": {
