@@ -26,7 +26,7 @@ export const ScrollExpansionHero: React.FC<ScrollExpansionHeroProps> = ({
 
   return (
     <div ref={containerRef} className="h-[200vh] relative">
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+      <div className="sticky top-0 h-[100dvh] w-full flex items-center justify-center overflow-hidden">
         {/* Hero Text */}
         <motion.div 
           style={{ opacity: textOpacity }}

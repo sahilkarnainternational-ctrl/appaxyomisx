@@ -1358,7 +1358,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
             initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
             animate={{ opacity: 1, backdropFilter: "blur(40px)" }}
             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            className="fixed inset-0 z-[400] bg-black/60 flex flex-col md:flex-row overflow-hidden font-sans selection:bg-blue-500/20"
+            className="fixed inset-0 z-[400] bg-black/60 flex flex-col md:flex-row overflow-hidden font-sans selection:bg-blue-500/20 h-[100dvh]"
           >
             {/* Mobile sidebar backdrop */}
             {isSidebarOpen && (
@@ -1646,7 +1646,9 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
 
 
               {/* Input Area - Minimal Gemini Style */}
-              <div className="w-full max-w-3xl mx-auto px-6 pb-12 pt-4 relative">
+              <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-4 relative"
+                style={{ paddingBottom: 'max(24px, calc(8px + env(safe-area-inset-bottom)))' }}
+              >
                 <form 
                   onSubmit={(e) => { e.preventDefault(); handleSend(); }}
                   className="relative group"
@@ -1971,9 +1973,10 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[300] bg-black flex flex-col items-center justify-center p-12 overflow-hidden"
+              className="fixed inset-0 z-[300] bg-black flex flex-col items-center justify-center overflow-hidden"
+              style={{ padding: 'max(48px, env(safe-area-inset-top)) max(48px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(48px, env(safe-area-inset-left))' }}
             >
-              <div className="absolute top-12 left-12">
+              <div className="absolute left-8 sm:left-12" style={{ top: 'max(48px, env(safe-area-inset-top))' }}>
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-4">
                     <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
@@ -1990,7 +1993,8 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
 
               <button 
                 onClick={() => toggleConversationMode(false)}
-                className="absolute top-12 right-12 p-4 bg-white/5 hover:bg-white/10 rounded-full text-white transition-all hover:rotate-90"
+                className="absolute right-8 sm:right-12 p-4 min-w-[44px] min-h-[44px] bg-white/5 active:bg-white/20 hover:bg-white/10 rounded-full text-white transition-all hover:rotate-90"
+                style={{ top: 'max(48px, env(safe-area-inset-top))' }}
               >
                 <X className="w-6 h-6" />
               </button>
@@ -2144,8 +2148,8 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
           setIsOpen(next);
           onStateChangeRef.current?.(next);
         }}
-        style={{ display: hideToggle ? 'none' : undefined }}
-        className="fixed bottom-10 right-10 z-[140] w-24 h-24 rounded-[40px] bg-black border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,1)] flex items-center justify-center transition-all group overflow-hidden"
+        style={{ display: hideToggle ? 'none' : undefined, bottom: 'max(40px, calc(16px + env(safe-area-inset-bottom)))', right: 'max(40px, env(safe-area-inset-right))' }}
+        className="fixed z-[140] w-20 h-20 sm:w-24 sm:h-24 rounded-[36px] sm:rounded-[40px] bg-black border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,1)] flex items-center justify-center transition-all group overflow-hidden"
         id="toggle-astra"
       >
         <div className="absolute inset-0 bg-blue-500/5 group-hover:bg-blue-500/20 transition-all opacity-0 group-hover:opacity-100 duration-500" />

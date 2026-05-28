@@ -24,13 +24,33 @@
 
 @layer base {
   * { margin:0; padding:0; box-sizing:border-box; }
+  
+  /* Remove 300ms tap delay on all interactive elements */
+  a, button, [role="button"], input, textarea, select, label {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Enforce 16px minimum on all inputs to prevent iOS auto-zoom */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+  
+  /* Smooth momentum scrolling on iOS */
+  .overflow-y-auto, .overflow-y-scroll {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+
   html { scroll-behavior:smooth; font-size:16px; }
   body { 
     background: #020408;
     background-image: radial-gradient(circle at top right, #0A101F, #020408 60%);
     color:var(--text); 
     font-family:var(--font-sans); 
-    overflow-x:hidden; 
+    overflow-x:hidden;
+    /* Prevent overscroll bounce when a fullscreen overlay is open */
+    overscroll-behavior: none;
     cursor:default; 
   }
 }
@@ -332,6 +352,28 @@ nav {
   .rich-grid { grid-template-columns: 1fr; }
   .reader-content { padding: 2rem; padding-top: max(2rem, env(safe-area-inset-top)); }
   .reader-text h2 { font-size: 2rem; }
+  /* Ensure hover-only interactions are disabled on touch devices */
+  .rich-card:hover { transform: none; }
+  .sub-topic-card:hover .st-card-inner { transform: none; }
+}
+
+/* Safe area utility classes for notched phones */
+.safe-top    { padding-top: max(1rem, env(safe-area-inset-top)); }
+.safe-bottom { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
+.safe-left   { padding-left: max(1rem, env(safe-area-inset-left)); }
+.safe-right  { padding-right: max(1rem, env(safe-area-inset-right)); }
+
+/* dvh fallback — 100dvh accounts for iOS Safari collapsible toolbar */
+.h-dvh  { height: 100dvh; }
+.min-h-dvh { min-height: 100dvh; }
+
+/* Touch-friendly minimum hit target */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .active-subject {
