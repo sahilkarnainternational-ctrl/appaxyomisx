@@ -1,0 +1,9 @@
+[build]
+  command = "pnpm install && pnpm run vercel-build"
+  publish = "artifacts/axyomis/dist/public"
+  environment = { NODE_VERSION = "20" }
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
