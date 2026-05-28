@@ -1322,11 +1322,15 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
       console.error("Chatbot Error:", error);
       setIsAnalyzing(false);
       
-      let errorMessage = "Neural interface disconnect. Check signal strength.";
+      let errorMessage = "Sorry, something went wrong. Please try again.";
       
-      // Handle Quota Exhausted 429
-      if (error?.message?.includes('429') || error?.status === 429 || error?.message?.includes('RESOURCE_EXHAUSTED')) {
-        errorMessage = "### ⚠️ AI Service Busy\nAstra is currently at full capacity (Quota Exceeded). Please wait a moment (approx. 60 seconds) before trying again.";
+      const errStr = JSON.stringify(error) + (error?.message || '');
+      if (errStr.includes('429') || error?.status === 429 || errStr.includes('RESOURCE_EXHAUSTED') || errStr.includes('quota')) {
+        errorMessage = "The Gemini API quota for this key has been exceeded. To fix this:\n\n1. Go to **https://aistudio.google.com/apikey**\n2. Open your Google Cloud project and **enable billing**\n3. Then come back and try again.\n\nAlternatively, create a brand new Google account and generate a fresh API key.";
+      } else if (errStr.includes('API_KEY') || errStr.includes('403') || error?.status === 403) {
+        errorMessage = "The Gemini API key is invalid or not authorized. Please check your API key in the Secrets panel.";
+      } else if (errStr.includes('404') || error?.status === 404) {
+        errorMessage = "The AI model is unavailable. Please try again in a moment.";
       }
 
       setMessages(prev => [...prev, { id: generateId(), role: 'assistant', content: errorMessage }]);
