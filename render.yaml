@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: axyomis
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: pnpm install --frozen-lockfile && pnpm run vercel-build
+    startCommand: npx serve -s artifacts/axyomis/dist/public -p $PORT --single
+    rootDir: .
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        generateValue: true
+      - key: BASE_PATH
+        value: "/"
