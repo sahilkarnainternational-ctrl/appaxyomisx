@@ -4,12 +4,14 @@ services:
     env: node
     region: oregon
     plan: free
-    buildCommand: corepack enable && corepack prepare pnpm@9 --activate && pnpm install --frozen-lockfile --prod=false && pnpm --dir artifacts/axyomis exec vite build --config ../../vite.vercel.config.ts
-    startCommand: pnpm exec serve -s artifacts/axyomis/dist/public -l tcp://0.0.0.0:${PORT:-10000}
+    buildCommand: corepack enable && corepack prepare pnpm@9.15.9 --activate && pnpm install --frozen-lockfile --prod=false && pnpm run render-build
+    startCommand: cd artifacts/axyomis && pnpm exec serve -s dist/public -l tcp://0.0.0.0:${PORT:-10000}
     rootDir: .
     envVars:
       - key: NODE_VERSION
-        value: "20"
+        value: "22.13.0"
+      - key: PNPM_VERSION
+        value: "9"
       - key: NODE_ENV
         value: production
       - key: PORT
