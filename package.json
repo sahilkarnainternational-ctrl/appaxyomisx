@@ -4,13 +4,16 @@
   "license": "MIT",
   "scripts": {
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent:$npm_execpath\" in *pnpm*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
-    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "build": "pnpm --filter axyomis run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
-    "render-build": "pnpm --filter axyomis run build",
-    "start": "pnpm --filter axyomis exec serve -s dist/public -l tcp://0.0.0.0:${PORT:-10000}"
+    "start:server": "node server.js"
   },
   "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "groq-sdk": "^0.4.0"
+  },
   "devDependencies": {
     "prettier": "^3.8.3",
     "serve": "^14.2.0",

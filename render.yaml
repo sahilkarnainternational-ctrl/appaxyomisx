@@ -1,20 +1,26 @@
 services:
-  - type: web
-    name: axyomis
+  - name: axyomis-api
+    type: web
     env: node
-    region: oregon
     plan: free
-    buildCommand: corepack enable && corepack prepare pnpm@9.15.9 --activate && pnpm install --frozen-lockfile --prod=false && pnpm run render-build
-    startCommand: pnpm run start
-    rootDir: .
+    buildCommand: |
+      pnpm install --filter=@workspace/api-server
+      pnpm --filter=@workspace/api-server run build
+    startCommand: pnpm --filter=@workspace/api-server run start
     envVars:
-      - key: NODE_VERSION
-        value: "22.13.0"
-      - key: PNPM_VERSION
-        value: "9.15.9"
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        generateValue: true
-      - key: BASE_PATH
-        value: "/"
+      - key: GROQ_API_KEY
+        sync: false
+      - key: YOUTUBE_API_KEY
+        value: YOUR_YOUTUBE_API_KEY
+  - name: axyomis-chatbot
+    type: web
+    plan: free
+    env: static
+    buildCommand: | 
+      pnpm install --filter=@workspace/axyomis
+      pnpm --filter=@workspace/axyomis run build
+    staticPublishPath: ./artifacts/axyomis/dist
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://axyomis-api.onrender.com/api/*

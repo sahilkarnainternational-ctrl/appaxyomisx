@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   ChevronRight, ChevronLeft, GraduationCap, BookOpen, Atom, FlaskConical, Dna, Telescope,
   Brain, Calculator, Check, User, Mail, MessageCircle, Sparkles, Phone, Calendar,
-  Globe, Shield, X
+  Globe, Shield, X, Landmark, Map
 } from 'lucide-react';
 import { useUser, ClassLevel, Subject, ParentInfo, StudentProfile } from '../context/UserContext';
+import { curriculum } from '../data/curriculum';
 
-const SUBJECTS: { id: Subject; icon: React.ReactNode; color: string; desc: string }[] = [
+const ALL_SUBJECTS: { id: Subject; icon: React.ReactNode; color: string; desc: string }[] = [
   { id: 'Science', icon: <Atom className="w-5 h-5" />, color: 'from-cyan-500/20 to-blue-500/20 border-cyan-500/40', desc: 'General sciences' },
   { id: 'Mathematics', icon: <Calculator className="w-5 h-5" />, color: 'from-purple-500/20 to-indigo-500/20 border-purple-500/40', desc: 'Algebra, calculus & more' },
   { id: 'Chemistry', icon: <FlaskConical className="w-5 h-5" />, color: 'from-green-500/20 to-emerald-500/20 border-green-500/40', desc: 'Reactions & molecules' },
@@ -15,6 +16,10 @@ const SUBJECTS: { id: Subject; icon: React.ReactNode; color: string; desc: strin
   { id: 'Biology', icon: <Dna className="w-5 h-5" />, color: 'from-pink-500/20 to-rose-500/20 border-pink-500/40', desc: 'Life & living systems' },
   { id: 'Astronomy', icon: <Telescope className="w-5 h-5" />, color: 'from-indigo-500/20 to-violet-500/20 border-indigo-500/40', desc: 'Stars, planets & cosmos' },
   { id: 'AI & Computer Science', icon: <Brain className="w-5 h-5" />, color: 'from-teal-500/20 to-cyan-500/20 border-teal-500/40', desc: 'Algorithms & AI' },
+  { id: 'History', icon: <Landmark className="w-5 h-5" />, color: 'from-orange-500/20 to-red-500/20 border-orange-500/40', desc: 'Events & civilizations' },
+  { id: 'Geography', icon: <Map className="w-5 h-5" />, color: 'from-lime-500/20 to-green-500/20 border-lime-500/40', desc: 'Maps & environments' },
+  { id: 'English', icon: <BookOpen className="w-5 h-5" />, color: 'from-red-500/20 to-rose-500/20 border-red-500/40', desc: 'Language & literature' },
+  { id: 'Social Studies', icon: <Globe className="w-5 h-5" />, color: 'from-amber-500/20 to-yellow-500/20 border-amber-500/40', desc: 'Societies & cultures' },
 ];
 
 const CLASS_GROUPS = [
@@ -24,27 +29,25 @@ const CLASS_GROUPS = [
   { label: 'Higher Ed', range: 'College+', grades: ['Undergraduate','Postgraduate'] as ClassLevel[], color: 'from-amber-500/10 to-orange-500/10 border-amber-500/30', icon: '🏛️' },
 ];
 
-const COUNTRIES = ['Nepal','India','USA','UK','Australia','Canada','Bangladesh','Pakistan','Sri Lanka','Other'];
-
 interface OnboardingFlowProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const STEPS = ['Class', 'Subjects', 'My Profile', 'Parent 1', 'Parent 2'];
+const STEPS = ['Location', 'Class', 'Subjects', 'My Profile', 'Parent 1', 'Parent 2'];
 
 export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ isOpen, onClose }) => {
   const { completeOnboarding } = useUser();
   const [step, setStep] = useState(0);
   const [saving, setSaving] = useState(false);
 
+  const [country, setCountry] = useState<keyof typeof curriculum.countries>('India');
   const [selectedClass, setSelectedClass] = useState<ClassLevel | null>(null);
   const [selectedSubjects, setSelectedSubjects] = useState<Subject[]>([]);
 
   const [studentName, setStudentName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
-  const [country, setCountry] = useState('Nepal');
-
+  
   const [p1Name, setP1Name] = useState('');
   const [p1Email, setP1Email] = useState('');
   const [p1WhatsApp, setP1WhatsApp] = useState('');
@@ -55,18 +58,30 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ isOpen, onClose 
   const [p2WhatsApp, setP2WhatsApp] = useState('');
   const [p2Relation, setP2Relation] = useState('Father');
 
+  const availableGrades = useMemo(() => {
+    return curriculum.countries[country]?.grades ? Object.keys(curriculum.countries[country].grades) : [];
+  }, [country]);
+
+  const availableSubjects = useMemo(() => {
+    if (!selectedClass || !country) return [];
+    const subjects = curriculum.countries[country]?.grades[selectedClass] || [];
+    return ALL_SUBJECTS.filter(s => subjects.includes(s.id));
+  }, [country, selectedClass]);
+
+
   const toggleSubject = (s: Subject) => {
     setSelectedSubjects(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]);
   };
 
   const canGoNext = () => {
-    if (step === 0) return !!selectedClass;
-    if (step === 1) return selectedSubjects.length > 0;
+    if (step === 0) return !!country;
+    if (step === 1) return !!selectedClass;
+    if (step === 2) return selectedSubjects.length > 0;
     return true;
   };
 
   const handleFinish = async () => {
-    if (!selectedClass || selectedSubjects.length === 0) return;
+    if (!selectedClass || selectedSubjects.length === 0 || !country) return;
     setSaving(true);
 
     const studentProfile: StudentProfile = {};
@@ -152,45 +167,69 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ isOpen, onClose 
           <div className="flex-1 overflow-y-auto px-6 md:px-8 pb-4 relative z-10">
             <AnimatePresence mode="wait">
 
-              {/* STEP 0: Class Level */}
+              {/* STEP 0: Location */}
               {step === 0 && (
                 <motion.div key="s0" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+                  <h3 className="text-lg font-bold text-white mb-1 mt-2">Where are you studying from?</h3>
+                  <p className="text-slate-500 text-xs mb-4">Astra will tailor your curriculum to your region.</p>
+                   <div className="flex flex-wrap gap-1.5">
+                        {Object.keys(curriculum.countries).map(c => (
+                          <button
+                            key={c}
+                            onClick={() => setCountry(c as keyof typeof curriculum.countries)}
+                            className={`px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all border ${country === c ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300' : 'bg-white/5 border-white/10 text-slate-500 hover:text-white hover:border-white/20'}`}
+                          >
+                            {c}
+                          </button>
+                        ))}
+                      </div>
+                </motion.div>
+              )}
+
+              {/* STEP 1: Class Level */}
+              {step === 1 && (
+                <motion.div key="s1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
                   <h3 className="text-lg font-bold text-white mb-1 mt-2">What's your class?</h3>
                   <p className="text-slate-500 text-xs mb-4">Your AI tutor adapts all content to your level.</p>
                   <div className="grid grid-cols-2 gap-2.5">
-                    {CLASS_GROUPS.map(group => (
-                      <div key={group.label} className={`rounded-2xl border bg-gradient-to-br ${group.color} p-3.5 space-y-2`}>
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-lg">{group.icon}</span>
-                          <div>
-                            <div className="text-[11px] font-bold text-white">{group.label}</div>
-                            <div className="text-[9px] text-slate-500">{group.range}</div>
+                    {CLASS_GROUPS.map(group => {
+                      const gradesInGroup = group.grades.filter(g => availableGrades.includes(g));
+                      if (gradesInGroup.length === 0) return null;
+
+                      return (
+                        <div key={group.label} className={`rounded-2xl border bg-gradient-to-br ${group.color} p-3.5 space-y-2`}>
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-lg">{group.icon}</span>
+                            <div>
+                              <div className="text-[11px] font-bold text-white">{group.label}</div>
+                              <div className="text-[9px] text-slate-500">{group.range}</div>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-1">
+                            {gradesInGroup.map(g => (
+                              <button
+                                key={g}
+                                onClick={() => setSelectedClass(g)}
+                                className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all border ${selectedClass === g ? 'bg-cyan-500 border-cyan-400 text-black shadow-lg shadow-cyan-500/30' : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/30'}`}
+                              >
+                                {g.replace('Grade ', 'G')}
+                              </button>
+                            ))}
                           </div>
                         </div>
-                        <div className="flex flex-wrap gap-1">
-                          {group.grades.map(g => (
-                            <button
-                              key={g}
-                              onClick={() => setSelectedClass(g)}
-                              className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all border ${selectedClass === g ? 'bg-cyan-500 border-cyan-400 text-black shadow-lg shadow-cyan-500/30' : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/30'}`}
-                            >
-                              {g.replace('Grade ', 'G')}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 </motion.div>
               )}
 
-              {/* STEP 1: Subjects */}
-              {step === 1 && (
-                <motion.div key="s1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+              {/* STEP 2: Subjects */}
+              {step === 2 && (
+                <motion.div key="s2" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
                   <h3 className="text-lg font-bold text-white mb-1 mt-2">Choose your subjects</h3>
                   <p className="text-slate-500 text-xs mb-4">Pick one or more — select all that you study.</p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                    {SUBJECTS.map(s => (
+                    {availableSubjects.map(s => (
                       <button
                         key={s.id}
                         onClick={() => toggleSubject(s.id)}
@@ -210,9 +249,9 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ isOpen, onClose 
                 </motion.div>
               )}
 
-              {/* STEP 2: Student Profile */}
-              {step === 2 && (
-                <motion.div key="s2" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+              {/* STEP 3: Student Profile */}
+              {step === 3 && (
+                <motion.div key="s3" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
                   <h3 className="text-lg font-bold text-white mb-1 mt-2">Your Profile</h3>
                   <p className="text-slate-500 text-xs mb-4">Helps Astra personalize your learning experience.</p>
                   <div className="space-y-3">
@@ -237,23 +276,6 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ isOpen, onClose 
                         className="flex-1 bg-transparent text-white text-sm outline-none [color-scheme:dark]"
                       />
                     </div>
-                    {/* Country */}
-                    <div>
-                      <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-slate-500 mb-2 px-1">
-                        <Globe className="w-3 h-3" />Country / Curriculum
-                      </div>
-                      <div className="flex flex-wrap gap-1.5">
-                        {COUNTRIES.map(c => (
-                          <button
-                            key={c}
-                            onClick={() => setCountry(c)}
-                            className={`px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all border ${country === c ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300' : 'bg-white/5 border-white/10 text-slate-500 hover:text-white hover:border-white/20'}`}
-                          >
-                            {c}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
                     <div className="p-3 rounded-xl bg-cyan-500/5 border border-cyan-500/15 text-[10px] text-cyan-400/70 font-bold uppercase tracking-widest">
                       🎯 AI answers will match your curriculum ({country})
                     </div>
@@ -261,9 +283,9 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ isOpen, onClose 
                 </motion.div>
               )}
 
-              {/* STEP 3: Parent 1 */}
-              {step === 3 && (
-                <motion.div key="s3" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+              {/* STEP 4: Parent 1 */}
+              {step === 4 && (
+                <motion.div key="s4" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
                   <h3 className="text-lg font-bold text-white mb-1 mt-2">Primary Contact</h3>
                   <p className="text-slate-500 text-xs mb-4">
                     Parent or guardian #1 — receives daily progress reports.
@@ -305,9 +327,9 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ isOpen, onClose 
                 </motion.div>
               )}
 
-              {/* STEP 4: Parent 2 */}
-              {step === 4 && (
-                <motion.div key="s4" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+              {/* STEP 5: Parent 2 */}
+              {step === 5 && (
+                <motion.div key="s5" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
                   <h3 className="text-lg font-bold text-white mb-1 mt-2">Secondary Contact <span className="text-slate-500 font-normal text-sm">(Optional)</span></h3>
                   <p className="text-slate-500 text-xs mb-4">
                     Add a second parent/guardian for additional report notifications.
