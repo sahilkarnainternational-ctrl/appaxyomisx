@@ -11,7 +11,7 @@ services:
       - key: NODE_VERSION
         value: "22.13.0"
       - key: PNPM_VERSION
-        value: "9"
+        value: "9.15.9"
       - key: NODE_ENV
         value: production
       - key: PORT
