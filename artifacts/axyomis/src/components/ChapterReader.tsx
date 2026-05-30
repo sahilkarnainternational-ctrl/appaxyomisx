@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef, useCallback } from \'react\';
-import { motion, AnimatePresence } from \'motion/react\';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   BookOpen, X, ChevronLeft, ChevronRight, ExternalLink, Play,
   Layers, Sparkles, Info, Quote, Lightbulb, Brain, Clock,
   ArrowRight, Bookmark, Share2, FileText
-} from \'lucide-react\';
-import Markdown from \'react-markdown\';
-import remarkGfm from \'remark-gfm\';
-import remarkMath from \'remark-math\';
-import rehypeKatex from \'rehype-katex\';
-import \'katex/dist/katex.min.css\';
+} from 'lucide-react';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 
 interface ChapterData {
   title: string;
@@ -34,7 +34,7 @@ interface ChapterReaderProps {
   onNavigate?: (topic: string, context?: string) => void;
 }
 
-const fetchWiki = async (topic: string, context = \'\'): Promise<ChapterData | null> => {
+const fetchWiki = async (topic: string, context = ''): Promise<ChapterData | null> => {
   try {
     const WIKI_MAP: Record<string, string> = {
       "Life": "Life (biology)", "Plant reproduction": "Plant reproduction",
@@ -49,7 +49,7 @@ const fetchWiki = async (topic: string, context = \'\'): Promise<ChapterData | n
       "Mammal": "Mammal", "Bird": "Bird", "Reptile": "Reptile",
       "Amphibian": "Amphibian", "Fish": "Fish", "Insect": "Insect",
       "Classical mechanics": "Classical mechanics",
-      "Newton\'s laws of motion": "Newton\'s laws of motion",
+      "Newton's laws of motion": "Newton's laws of motion",
       "Gravity": "Gravity", "Flux": "Flux",
       "Acid–base reaction": "Acid–base reaction", "Redox": "Redox",
       "Cell cycle": "Cell cycle", "Mitosis": "Mitosis",
@@ -95,17 +95,17 @@ const fetchWiki = async (topic: string, context = \'\'): Promise<ChapterData | n
         const imgPages = imgData.query.pages;
         const imgPageId = Object.keys(imgPages)[0];
         const images = imgPages[imgPageId].images || [];
-        const badWords = [\'logo\',\'icon\',\'stub\',\'symbol\',\'flag\',\'map\',\'ambox\',\'wikiquote\',\'padlock\',\'search\',\'edit\',\'speaker\',\'increase\',\'decrease\',\'question\',\'disambig\',\'portal\',\'commons\',\'category\',\'folder\'];
+        const badWords = ['logo','icon','stub','symbol','flag','map','ambox','wikiquote','padlock','search','edit','speaker','increase','decrease','question','disambig','portal','commons','category','folder'];
         for (const img of images) {
           const lower = img.title.toLowerCase();
-          if (!lower.endsWith(\'.jpg\') && !lower.endsWith(\'.jpeg\') && !lower.endsWith(\'.png\')) continue;
+          if (!lower.endsWith('.jpg') && !lower.endsWith('.jpeg') && !lower.endsWith('.png')) continue;
           if (badWords.some(w => lower.includes(w))) continue;
           const urlRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(img.title)}&prop=imageinfo&iiprop=url&iiurlwidth=800&format=json&origin=*`);
           const urlData = await urlRes.json();
           const urlPages = urlData.query.pages;
           const upId = Object.keys(urlPages)[0];
           const info = urlPages[upId].imageinfo?.[0];
-          if (info?.thumburl && !info.thumburl.includes(\'1px\')) { imgSrc = info.thumburl; break; }
+          if (info?.thumburl && !info.thumburl.includes('1px')) { imgSrc = info.thumburl; break; }
         }
       } catch {}
     }
@@ -124,12 +124,12 @@ const fetchWiki = async (topic: string, context = \'\'): Promise<ChapterData | n
   }
 };
 
-const getRelatedTopics = (topic: string, context = \'\'): string[] => {
+const getRelatedTopics = (topic: string, context = ''): string[] => {
   const DATA_SETS: Record<string, string[]> = {
-    Physics: ["Classical mechanics","Kinematics","Newton\'s laws of motion","Gravity","Work (physics)","Energy","Power (physics)","Momentum","Torque","Fluid mechanics","Bernoulli\'s principle","Thermodynamics","Entropy","Electromagnetism","Electric charge","Magnetic field","Maxwell\'s equations","Optics","Refraction","Diffraction","Quantum mechanics","Schrödinger equation","Heisenberg uncertainty principle","Theory of relativity","Special relativity","Nuclear physics","Radioactivity","Astrophysics","Black hole","Cosmology","String theory"],
+    Physics: ["Classical mechanics","Kinematics","Newton's laws of motion","Gravity","Work (physics)","Energy","Power (physics)","Momentum","Torque","Fluid mechanics","Bernoulli's principle","Thermodynamics","Entropy","Electromagnetism","Electric charge","Magnetic field","Maxwell's equations","Optics","Refraction","Diffraction","Quantum mechanics","Schrödinger equation","Heisenberg uncertainty principle","Theory of relativity","Special relativity","Nuclear physics","Radioactivity","Astrophysics","Black hole","Cosmology","String theory"],
     Chemistry: ["Atomic theory","Electron configuration","Periodic table","Chemical bond","Covalent bond","Ionic bond","Intermolecular force","Chemical reaction","Stoichiometry","Acid–base reaction","Redox","Chemical equilibrium","Chemical kinetics","Chemical thermodynamics","Electrochemistry","Organic chemistry","Alkane","Alkene","Alcohol","Carboxylic acid","Amine","Polymer","Biochemistry","Protein","Carbohydrate","Lipid","Nucleic acid","Enzyme","Metabolism","Ideal gas law","Spectroscopy","Chromatography"],
     Biology: ["Cell (biology)","Organelle","Cell nucleus","Mitochondrion","Chloroplast","Cell membrane","Ribosome","Lysosome","Cell cycle","Mitosis","Meiosis","Genetics","DNA","RNA","Gene","Chromosome","Mutation","Transcription (biology)","Translation (biology)","Epigenetics","Evolution","Natural selection","Phylogeny","Ecology","Ecosystem","Food web","Biome","Tree","Anatomy","Physiology","Nervous system","Cardiovascular system","Respiratory system","Endocrine system","Immune system","Botany","Photosynthesis","Microbiology","Bacteria","Virus","Fungi","CRISPR","Stem cell"],
-    Mathematics: ["Calculus","Algebra","Trigonometry","Pythagorean theorem","Euler\'s formula","Integral","Derivative","Linear algebra","Probability","Statistics","Differential equation","Quadratic equation","Taylor series","Fourier transform","Complex number","Matrix (mathematics)","Vector space","Logarithm"]
+    Mathematics: ["Calculus","Algebra","Trigonometry","Pythagorean theorem","Euler's formula","Integral","Derivative","Linear algebra","Probability","Statistics","Differential equation","Quadratic equation","Taylor series","Fourier transform","Complex number","Matrix (mathematics)","Vector space","Logarithm"]
   };
   const all = DATA_SETS[context] || Object.values(DATA_SETS).flat();
   const idx = all.indexOf(topic);
@@ -144,20 +144,20 @@ const getSubjects = () => {
 
 const getSubjectIcon = (subject: string): string => {
   const icons: Record<string, string> = {
-    Physics: \'fa-atom\', Chemistry: \'fa-flask\', Biology: \'fa-dna\',
-    Mathematics: \'fa-square-root-alt\', Nature: \'fa-leaf\',
-    Fruits: \'fa-apple-alt\', Vegetables: \'fa-carrot\', Hygiene: \'fa-hand-sparkles\',
-    diseases: \'fa-virus-slash\'
+    Physics: 'fa-atom', Chemistry: 'fa-flask', Biology: 'fa-dna',
+    Mathematics: 'fa-square-root-alt', Nature: 'fa-leaf',
+    Fruits: 'fa-apple-alt', Vegetables: 'fa-carrot', Hygiene: 'fa-hand-sparkles',
+    diseases: 'fa-virus-slash'
   };
-  return icons[subject] || \'fa-microscope\';
+  return icons[subject] || 'fa-microscope';
 };
 
 const FORMULA_MAP: Record<string, string> = {
-  "Newton\'s laws of motion": "$$ F = m \\cdot a $$",
+  "Newton's laws of motion": "$$ F = m \\cdot a $$",
   "Gravity": "$$ F = G \\frac{m_1 m_2}{r^2} $$",
   "Thermodynamics": "$$ \\Delta U = Q - W $$",
   "Entropy": "$$ S = k_B \\ln \\Omega $$",
-  "Maxwell\'s equations": "$$ \\nabla \\cdot \\mathbf{E} = \\frac{\\rho}{\\varepsilon_0} \\quad \\text{and} \\quad \\nabla \\times \\mathbf{E} = -\\frac{\\partial \\mathbf{B}}{\\partial t} $$",
+  "Maxwell's equations": "$$ \\nabla \\cdot \\mathbf{E} = \\frac{\\rho}{\\varepsilon_0} \\quad \\text{and} \\quad \\nabla \\times \\mathbf{E} = -\\frac{\\partial \\mathbf{B}}{\\partial t} $$",
   "Schrödinger equation": "$$ i\\hbar \\frac{\\partial}{\\partial t}\\Psi(\\mathbf{r},t) = \\hat{H}\\Psi(\\mathbf{r},t) $$",
   "Theory of relativity": "$$ E = mc^2 $$",
   "Ideal gas law": "$$ PV = nRT $$",
@@ -174,10 +174,10 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [related, setRelated] = useState<RelatedTopic[]>([]);
-  const [activeSection, setActiveSection] = useState(\'overview\');
+  const [activeSection, setActiveSection] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [readTime, setReadTime] = useState(\'3 min\');
+  const [readTime, setReadTime] = useState('3 min');
 
   useEffect(() => {
     if (!isOpen || !query) return;
@@ -190,7 +190,7 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
       .then(d => {
         if (d?.extract) {
           setData(d);
-          const words = d.extract.replace(/<[^>]+>/g, \'\').split(/\s+/).length;
+          const words = d.extract.replace(/<[^>]+>/g, '').split(/\s+/).length;
           setReadTime(`${Math.max(2, Math.ceil(words / 200))} min read`);
         } else {
           setError(`The chapter for "${query}" could not be retrieved. It may be a protected or non-existent topic.`);
@@ -204,7 +204,7 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
       });
 
     const relatedTitles = getRelatedTopics(query, context);
-    setRelated(relatedTitles.map(t => ({ title: t, icon: getSubjectIcon(context || \'Science\') })));
+    setRelated(relatedTitles.map(t => ({ title: t, icon: getSubjectIcon(context || 'Science') })));
 
     // Prefetch related images
     relatedTitles.forEach(async t => {
@@ -217,16 +217,16 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
 
   // Close on Escape
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === \'Escape\') onClose(); };
-    if (isOpen) window.addEventListener(\'keydown\', onKey);
-    return () => window.removeEventListener(\'keydown\', onKey);
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    if (isOpen) window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [isOpen, onClose]);
 
   // Lock body scroll
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = \'hidden\';
-    else document.body.style.overflow = \'\';
-    return () => { document.body.style.overflow = \'\'; };
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+    return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
   const sections = React.useMemo(() => {
@@ -235,11 +235,11 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
     // Find h2/h3 headings in the extract to build TOC
     const matches: { id: string; title: string; level: number }[] = [];
     const parser = new DOMParser();
-    const doc = parser.parseFromString(html, \'text/html\');
-    doc.querySelectorAll(\'h2, h3, h4\').forEach((el, i) => {
+    const doc = parser.parseFromString(html, 'text/html');
+    doc.querySelectorAll('h2, h3, h4').forEach((el, i) => {
       const id = `section-${i}`;
-      el.setAttribute(\'id\', id);
-      matches.push({ id, title: el.textContent || \'\', level: parseInt(el.tagName[1]) });
+      el.setAttribute('id', id);
+      matches.push({ id, title: el.textContent || '', level: parseInt(el.tagName[1]) });
     });
     // Also inject IDs for the rendered content
     return matches;
@@ -248,7 +248,7 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
   const scrollToSection = (id: string) => {
     setActiveSection(id);
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: \'smooth\', block: \'start\' });
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setSidebarOpen(false);
   };
 
@@ -266,13 +266,13 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
         >
           {/* ── Sidebar TOC ── */}
           <AnimatePresence>
-            {(sidebarOpen || (typeof window !== \'undefined\' && window.innerWidth >= 1024)) && (
+            {(sidebarOpen || (typeof window !== 'undefined' && window.innerWidth >= 1024)) && (
               <motion.aside
                 initial={{ x: -280, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -280, opacity: 0 }}
-                transition={{ type: \'spring\', damping: 28, stiffness: 260 }}
-                className={`${sidebarOpen ? \'absolute\' : \'hidden lg:flex\'} lg:relative left-0 top-0 bottom-0 w-[280px] bg-[#0a0a0c] border-r border-white/[0.04] flex-col z-20`}
+                transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+                className={`${sidebarOpen ? 'absolute' : 'hidden lg:flex'} lg:relative left-0 top-0 bottom-0 w-[280px] bg-[#0a0a0c] border-r border-white/[0.04] flex-col z-20`}
               >
                 <div className="p-6 border-b border-white/[0.04]">
                   <div className="flex items-center gap-3 mb-2">
@@ -289,8 +289,8 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-1 scrollbar-none">
                   <button
-                    onClick={() => scrollToSection(\'overview\')}
-                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${activeSection === \'overview\' ? \'bg-blue-500/10 text-blue-400 border border-blue-500/20\' : \'text-slate-400 hover:bg-white/[0.03] hover:text-white\'}`}
+                    onClick={() => scrollToSection('overview')}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${activeSection === 'overview' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:bg-white/[0.03] hover:text-white'}`}
                   >
                     Overview
                   </button>
@@ -298,23 +298,23 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
                     <button
                       key={s.id}
                       onClick={() => scrollToSection(s.id)}
-                      className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all ${activeSection === s.id ? \'bg-blue-500/10 text-blue-400 border border-blue-500/20\' : \'text-slate-400 hover:bg-white/[0.03] hover:text-white\'} ${s.level >= 3 ? \'pl-6 text-[11px] opacity-70\' : \'\'}`}
+                      className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all ${activeSection === s.id ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:bg-white/[0.03] hover:text-white'} ${s.level >= 3 ? 'pl-6 text-[11px] opacity-70' : ''}`}
                     >
                       {s.title}
                     </button>
                   ))}
                   {hasFormula && (
                     <button
-                      onClick={() => scrollToSection(\'formula\')}
-                      className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${activeSection === \'formula\' ? \'bg-blue-500/10 text-blue-400 border border-blue-500/20\' : \'text-slate-400 hover:bg-white/[0.03] hover:text-white\'}`}
+                      onClick={() => scrollToSection('formula')}
+                      className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${activeSection === 'formula' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:bg-white/[0.03] hover:text-white'}`}
                     >
-                      <i className="fas fa-square-root-alt mr-2 text-[10px]"] />
+                      <i className="fas fa-square-root-alt mr-2 text-[10px]" />
                       Key Formula
                     </button>
                   )}
                   <button
-                    onClick={() => scrollToSection(\'sources\')}
-                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${activeSection === \'sources\' ? \'bg-blue-500/10 text-blue-400 border border-blue-500/20\' : \'text-slate-400 hover:bg-white/[0.03] hover:text-white\'}`}
+                    onClick={() => scrollToSection('sources')}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${activeSection === 'sources' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:bg-white/[0.03] hover:text-white'}`}
                   >
                     <Quote className="w-3 h-3 inline mr-2" />
                     Sources & Citations
@@ -388,7 +388,7 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
                 // Detect active section on scroll
                 if (!contentRef.current) return;
                 const container = contentRef.current;
-                const allIds = [\'overview\', ...sections.map(s => s.id), ...(hasFormula ? [\'formula\'] : []), \'sources\'];
+                const allIds = ['overview', ...sections.map(s => s.id), ...(hasFormula ? ['formula'] : []), 'sources'];
                 for (let i = allIds.length - 1; i >= 0; i--) {
                   const el = document.getElementById(allIds[i]);
                   if (el && el.offsetTop <= container.scrollTop + 120) {
@@ -403,7 +403,7 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
                   <div className="flex flex-col items-center justify-center py-32 gap-6">
                     <motion.div
                       animate={{ rotate: 360 }}
-                      transition={{ repeat: Infinity, duration: 2, ease: \'linear\' }}
+                      transition={{ repeat: Infinity, duration: 2, ease: 'linear' }}
                       className="w-12 h-12 border-2 border-blue-500 border-t-transparent rounded-full"
                     />
                     <div className="space-y-2 text-center">
@@ -512,16 +512,16 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
                             img: ({ src, alt }) => (
                               <figure className="my-10">
                                 <div className="rounded-xl overflow-hidden border border-white/[0.05]">
-                                  <img src={src} alt={alt || \'\'} className="w-full object-cover" />
+                                  <img src={src} alt={alt || ''} className="w-full object-cover" />
                                 </div>
                                 <figcaption className="mt-3 text-[10px] text-slate-600 font-mono uppercase tracking-widest text-center">
-                                  {alt || \'Figure — Visual reference\'}
+                                  {alt || 'Figure — Visual reference'}
                                 </figcaption>
                               </figure>
                             ),
                           }}
                         >
-                          {data.extract.replace(/<\/?h2>/g, \'## \').replace(/<\/?h3>/g, \'### \').replace(/<\/?p>/g, \'\n\n\').replace(/<br\s*\/?>/gi, \'\n\n\')}
+                          {data.extract.replace(/<\/?h2>/g, '## ').replace(/<\/?h3>/g, '### ').replace(/<\/?p>/g, '\n\n').replace(/<br\s*\/?>/gi, '\n\n')}
                         </Markdown>
                       </div>
                     </motion.div>
@@ -544,7 +544,7 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({ isOpen, onClose, q
                         </div>
                         <div className="bg-black/40 rounded-2xl p-6 sm:p-8 border border-white/[0.03] text-center overflow-x-auto">
                           <Markdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-                            {FORMULA_MAP[query] || \'\'}
+                            {FORMULA_MAP[query] || ''}
                           </Markdown>
                         </div>
                         <p className="mt-4 text-[10px] text-slate-600 font-mono uppercase tracking-widest text-right">

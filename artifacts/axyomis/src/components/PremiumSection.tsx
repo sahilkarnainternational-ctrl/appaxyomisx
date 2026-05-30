@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Check, X, Crown, Star, BarChart3, Video, Sparkles, GraduationCap, Clock, Bell, Shield, Timer, Zap } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { useCurrency } from '../hooks/useCurrency';

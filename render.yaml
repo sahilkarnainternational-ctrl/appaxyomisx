@@ -3,23 +3,19 @@ services:
     type: web
     env: node
     plan: free
-    buildCommand: |
-      pnpm install --filter=@workspace/api-server
-      pnpm --filter=@workspace/api-server run build
+    buildCommand: pnpm install && pnpm --filter=@workspace/api-server run build
     startCommand: pnpm --filter=@workspace/api-server run start
     envVars:
       - key: GROQ_API_KEY
         sync: false
       - key: YOUTUBE_API_KEY
-        value: YOUR_YOUTUBE_API_KEY
+        value: AIzaSyAGzqGwtomo0Pjku0LI_51R5P0AX-ehWbE
   - name: axyomis-chatbot
     type: web
     plan: free
     env: static
-    buildCommand: | 
-      pnpm install --filter=@workspace/axyomis
-      pnpm --filter=@workspace/axyomis run build
-    staticPublishPath: ./artifacts/axyomis/dist
+    buildCommand: pnpm --filter=@workspace/axyomis run build
+    staticPublishPath: ./artifacts/axyomis/dist/public
     routes:
       - type: rewrite
         source: /api/*

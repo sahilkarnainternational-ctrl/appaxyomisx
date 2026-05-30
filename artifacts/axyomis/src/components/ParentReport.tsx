@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, BookOpen, Brain, Clock, Award, BarChart3, Send, Copy, Check, Loader2, TrendingUp, Target, AlertCircle, RefreshCw } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { UpgradeModal } from './UpgradeModal';

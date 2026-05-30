@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronRight, ChevronLeft, GraduationCap, BookOpen, Atom, FlaskConical, Dna, Telescope,
   Brain, Calculator, Check, User, Mail, MessageCircle, Sparkles, Phone, Calendar,

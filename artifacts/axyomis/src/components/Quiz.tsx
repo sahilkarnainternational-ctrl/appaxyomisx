@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, ArrowRight, BrainCircuit } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 

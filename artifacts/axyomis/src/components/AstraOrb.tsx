@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, type MutableRefObject } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export type OrbState = 'idle' | 'listening' | 'thinking' | 'speaking';
 

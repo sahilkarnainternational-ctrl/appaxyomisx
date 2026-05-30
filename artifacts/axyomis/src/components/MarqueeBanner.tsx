@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 
 const TICKET_ITEMS = [
   "SYSTEM STATUS: ONLINE",

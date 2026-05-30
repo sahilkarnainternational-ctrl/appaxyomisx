@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Send, Trash2, Edit3, MessageSquare, TrendingUp, Users } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import { getAllReviews, getUserReview, submitReview, deleteReview, type Review } from '../services/activityService';

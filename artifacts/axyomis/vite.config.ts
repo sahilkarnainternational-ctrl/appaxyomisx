@@ -1,37 +1,44 @@
+
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
 import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+import { fileURLToPath } from "url";
 
-const port = parseInt(process.env.PORT || "3000");
-const basePath = process.env.BASE_PATH || "/";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export default defineConfig(async ({ mode }) => {
+export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
-    base: basePath,
-    plugins: [
-      react(),
-      tailwindcss(),
-      runtimeErrorOverlay(),
-    ],
+    plugins: [react()],
     define: {
-      "process.env.GEMINI_API_KEY": JSON.stringify(env.GEMINI_API_KEY || ""),
+      "process.env.GEMINI_API_KEY": JSON.stringify(env.GEMINI_API_KEY),
     },
     resolve: {
       alias: {
-        "@": path.resolve(import.meta.dirname, "src"),
+        "@": path.resolve(__dirname, "src"),
+        "@assets": path.resolve(__dirname, "../../attached_assets"),
       },
     },
-    root: path.resolve(import.meta.dirname),
     build: {
-      outDir: path.resolve(import.meta.dirname, "dist"),
+      outDir: path.resolve(__dirname, "dist/public"),
       emptyOutDir: true,
       sourcemap: false,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ["react", "react-dom"],
+            firebase: ["firebase/app", "firebase/auth", "firebase/firestore"],
+          },
+        },
+      },
     },
     server: {
-      port,
+      port: 3000,
+      strictPort: true,
+      host: "0.0.0.0",
+    },
+    preview: {
+      port: 3000,
       host: "0.0.0.0",
     },
   };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Cpu, Zap, Activity, Brain, BookOpen, Atom, FlaskConical, Telescope, Calculator, Dna, Star, Lightbulb, Target, Trophy, X } from 'lucide-react';
 
 const MESSAGES = [

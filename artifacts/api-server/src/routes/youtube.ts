@@ -1,47 +1,53 @@
-import { Router } from "express";
-import axios from "axios";
+const { Router } = require("express");
+const axios = require("axios");
 
 const router = Router();
 
 router.post("/youtube-multilingual", async (req, res) => {
   try {
     const { topic, level } = req.body as { topic: string; level?: string };
-    const apiKey = process.env.VITE_YOUTUBE_API_KEY || process.env.YOUTUBE_API_KEY;
+    const apiKey = process.env.YOUTUBE_API_KEY;
     if (!apiKey) {
-      res.status(400).json({ error: "YouTube API Key not configured" });
+      console.error("YouTube API Key not configured");
+      res.status(500).json({ error: "YouTube API Key not configured" });
       return;
     }
 
     const levelStr = level ? ` ${level} level` : "";
 
     const fetchLang = async (langQuery: string) => {
-      const response = await axios.get(
-        "https://www.googleapis.com/youtube/v3/search",
-        {
-          params: {
-            part: "snippet",
-            maxResults: 8,
-            q: `${topic}${levelStr} ${langQuery} full lecture explained tutorial`,
-            type: "video",
-            key: apiKey,
-            videoEmbeddable: "true",
-            videoSyndicated: "true",
-            safeSearch: "strict",
-            order: "relevance",
-            videoDuration: "medium",
-            videoCategoryId: "27",
+      try {
+        const response = await axios.get(
+          "https://www.googleapis.com/youtube/v3/search",
+          {
+            params: {
+              part: "snippet",
+              maxResults: 8,
+              q: `${topic}${levelStr} ${langQuery} full lecture explained tutorial`,
+              type: "video",
+              key: apiKey,
+              videoEmbeddable: "true",
+              videoSyndicated: "true",
+              safeSearch: "strict",
+              order: "relevance",
+              videoDuration: "medium",
+              videoCategoryId: "27",
+            },
           },
-        },
-      );
-      const items = response.data.items || [];
-      return items.map((item: any) => ({
-        id: item.id.videoId,
-        title: item.snippet.title,
-        thumbnail: item.snippet.thumbnails?.medium?.url || "",
-        channelTitle: item.snippet.channelTitle,
-        publishedAt: item.snippet.publishedAt,
-        description: item.snippet.description || "",
-      }));
+        );
+        const items = response.data.items || [];
+        return items.map((item: any) => ({
+          id: item.id.videoId,
+          title: item.snippet.title,
+          thumbnail: item.snippet.thumbnails?.medium?.url || "",
+          channelTitle: item.snippet.channelTitle,
+          publishedAt: item.snippet.publishedAt,
+          description: item.snippet.description || "",
+        }));
+      } catch (error) {
+        console.error(`Failed to fetch videos for query: ${langQuery}`, error);
+        return []; // Return empty array on error
+      }
     };
 
     const [english, hindi, nepali] = await Promise.allSettled([
@@ -57,7 +63,7 @@ router.post("/youtube-multilingual", async (req, res) => {
       nepali: nepali.status === "fulfilled" ? nepali.value : [],
     });
   } catch (e: any) {
-    req.log.error({ err: e }, "YouTube multilingual proxy error");
+    console.error({ err: e }, "YouTube multilingual proxy error");
     res.status(500).json({ error: "Failed to fetch YouTube videos" });
   }
 });
@@ -65,9 +71,10 @@ router.post("/youtube-multilingual", async (req, res) => {
 router.post("/youtube", async (req, res) => {
   try {
     const { query } = req.body as { query: string };
-    const apiKey = process.env.VITE_YOUTUBE_API_KEY || process.env.YOUTUBE_API_KEY;
+    const apiKey = process.env.YOUTUBE_API_KEnpmY;
     if (!apiKey) {
-      res.status(400).json({ error: "YouTube API Key not configured" });
+      console.error("YouTube API Key not configured");
+      res.status(500).json({ error: "YouTube API Key not configured" });
       return;
     }
 
@@ -98,9 +105,9 @@ router.post("/youtube", async (req, res) => {
     }));
     res.json({ videos });
   } catch (e: any) {
-    req.log.error({ err: e }, "YouTube proxy error");
+    console.error({ err: e }, "YouTube proxy error");
     res.status(500).json({ error: "Failed to fetch YouTube videos" });
   }
 });
 
-export default router;
+module.exports = router;

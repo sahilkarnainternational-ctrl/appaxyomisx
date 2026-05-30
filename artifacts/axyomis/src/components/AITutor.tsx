@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, BookOpen, Video, Brain, ClipboardList, ChevronRight, ChevronLeft,
   Loader2, Sparkles, Play, CheckCircle2, XCircle, RefreshCw, Crown, Lock,

@@ -1,66 +1,45 @@
-import { Router } from "express";
+const { Router } = require('express');
+const Groq = require('groq-sdk');
 
 const router = Router();
 
-router.post("/chat", async (req, res) => {
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
+
+router.post('/', async (req, res) => {
   try {
-    const { messages } = req.body as { messages: Array<{ role: string; content: string }> };
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      res.status(400).json({ error: "messages array is required" });
-      return;
+    const { messages } = req.body;
+
+    if (messages && messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'user') {
+        lastMessage.content += "\n\nAfter your response, please provide a list of 3-5 related topics for further study. Present them in a numbered list under the heading '## Related Topics'.";
+      }
     }
 
-    const apiKey = process.env.GROQ_API_KEY;
-    if (!apiKey) {
-      res.status(500).json({ error: "GROQ_API_KEY not configured" });
-      return;
-    }
-
-    const systemPrompt = `You are ASTRA — a brilliant, warm, and highly knowledgeable AI science tutor and assistant for Axyomis-X. 
-
-RULES:
-1. Answer EVERY question clearly and helpfully — greetings, casual chat, science, math, history, anything.
-2. For casual greetings ("hi", "hello", "how are you") — reply naturally and warmly, keep it short.
-3. For science/educational topics — give detailed, structured answers using markdown: headers, bullet points, bold text.
-4. For math — use clear notation and step-by-step working.
-5. You can describe diagrams using ASCII art or structured text.
-6. If asked who you are — say you are ASTRA, the AI inside Axyomis-X, created to help students learn.
-7. ALWAYS respond in the same language the user writes in.
-8. Keep voice-friendly responses concise (under 200 words when voice is on).
-9. NEVER say you cannot answer — always try your best.`;
-
-    const groqMessages = [
-      { role: "system", content: systemPrompt },
-      ...messages.map((m) => ({ role: m.role === "assistant" ? "assistant" : "user", content: m.content })),
-    ];
-
-    const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "llama3-70b-8192",
-        messages: groqMessages,
-        max_tokens: 2048,
-        temperature: 0.7,
-        stream: false,
-      }),
+    const stream = await groq.chat.completions.create({
+      messages,
+      model: 'llama3-8b-8192',
+      stream: true,
     });
 
-    if (!groqRes.ok) {
-      const errBody = await groqRes.text();
-      res.status(groqRes.status).json({ error: errBody });
-      return;
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content || '';
+      if (content) {
+        res.write(`data: ${JSON.stringify({ text: content })}\n\n`);
+      }
     }
 
-    const data = await groqRes.json() as any;
-    const reply = data.choices?.[0]?.message?.content ?? "";
-    res.json({ engine: "groq", reply });
-  } catch (err: any) {
-    res.status(500).json({ error: err?.message ?? "Internal server error" });
+    res.end();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
   }
 });
 
-export default router;
+module.exports = router;

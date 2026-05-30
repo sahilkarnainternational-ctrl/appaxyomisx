@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Globe } from './Globe';
 import { useUser } from '../context/UserContext';
 import { ArrowRight, Search } from 'lucide-react';

@@ -1,34 +1,76 @@
-import axios from \'axios\';
-import { getCache, setCache } from \'../lib/cache\';
+import axios from 'axios';
+import { getCache, setCache } from '../lib/cache';
+
+interface YouTubeThumbnail {
+  url: string;
+  width: number;
+  height: number;
+}
 
 export interface YouTubeVideo {
   id: string;
   title: string;
+  description: string;
   thumbnail: string;
   channelTitle: string;
-  publishedAt: string;
-  description: string;
 }
 
 export interface VideoGroup {
-  english: YouTubeVideo[];
-  hindi: YouTubeVideo[];
-  nepali: YouTubeVideo[];
+  english?: YouTubeVideo[];
+  hindi?: YouTubeVideo[];
+  nepali?: YouTubeVideo[];
 }
 
-export async function fetchMultilingualVideos(topic: string, level: string = \'\'): Promise<VideoGroup> {
-  const cacheKey = `youtube-${topic}-${level}`;
-  const cachedData = getCache(cacheKey);
-  if (cachedData) {
-    return cachedData;
+const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+const YOUTUBE_API_BASE_URL = 'https://www.googleapis.com/youtube/v3';
+
+const fetchVideos = async (query: string, lang: string): Promise<YouTubeVideo[]> => {
+  const cacheKey = `youtube-${query}-${lang}`;
+  const cached = await getCache(cacheKey, 3600); // Cache for 1 hour
+  if (cached) {
+    return JSON.parse(cached);
   }
 
   try {
-    const response = await axios.post(\'/api/youtube-multilingual\', { topic, level });
-    setCache(cacheKey, response.data);
-    return response.data;
+    const response = await axios.get(`${YOUTUBE_API_BASE_URL}/search`, {
+      params: {
+        part: 'snippet',
+        q: query,
+        type: 'video',
+        videoEmbeddable: 'true',
+        maxResults: 5,
+        key: YOUTUBE_API_KEY,
+        safeSearch: 'strict',
+        relevanceLanguage: lang,
+      },
+    });
+
+    const videos: YouTubeVideo[] = response.data.items.map((item: any) => ({
+      id: item.id.videoId,
+      title: item.snippet.title,
+      description: item.snippet.description,
+      thumbnail: item.snippet.thumbnails.high.url,
+      channelTitle: item.snippet.channelTitle,
+    }));
+
+    await setCache(cacheKey, JSON.stringify(videos));
+    return videos;
   } catch (error) {
-    console.error(\'YouTube Proxy Request Error:\', error);
-    return { english: [], hindi: [], nepali: [] };
+    console.error(`Error fetching YouTube videos for query "${query}" in ${lang}:`, error);
+    return [];
   }
-}
+};
+
+export const fetchMultilingualVideos = async (query: string): Promise<VideoGroup> => {
+  const [englishVideos, hindiVideos, nepaliVideos] = await Promise.all([
+    fetchVideos(query, 'en'),
+    fetchVideos(query, 'hi'),
+    fetchVideos(query, 'ne'),
+  ]);
+
+  return {
+    english: englishVideos,
+    hindi: hindiVideos,
+    nepali: nepaliVideos,
+  };
+};

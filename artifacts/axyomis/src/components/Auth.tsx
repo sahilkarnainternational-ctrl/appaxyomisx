@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, User, ArrowRight, Chrome, Loader2, AlertCircle } from 'lucide-react';
 import { signInWithGoogle, signInWithEmail, signUpWithEmail } from '../services/firebase';
 import { Globe } from './Globe';
