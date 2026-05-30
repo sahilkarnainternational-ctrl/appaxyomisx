@@ -1,7 +1,13 @@
 services:
-  - name: axyomis-x
-    type: web
+  - type: web
+    name: appaxyomisx
+    env: node
     plan: free
-    env: static
-    buildCommand: npm install --prefix Axyomis-X && npm run --prefix Axyomis-X build
-    staticPublishPath: ./Axyomis-X/dist
+    region: ohio
+    buildCommand: |
+      cd Axyomis-X
+      npm install
+      npm run build
+    startCommand: |
+      cd Axyomis-X
+      npm start
