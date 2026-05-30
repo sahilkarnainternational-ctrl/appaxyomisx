@@ -1,0 +1,6 @@
+{
+  "name": "Axyomis-X",
+  "description": "High-fidelity biomedical OS and scientific intelligence matrix. Explore the cosmos, anatomy, and pathology in a high-tech educational ecosystem.",
+  "requestFramePermissions": ["microphone", "camera"],
+  "majorCapabilities": ["PWA", "3D Visualization", "AI Research", "Scientific Analytics", "Neural Link"]
+}

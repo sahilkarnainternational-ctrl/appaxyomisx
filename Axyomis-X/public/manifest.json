@@ -1,0 +1,17 @@
+{
+  "name": "Axyomis-X",
+  "short_name": "AxyomisX",
+  "description": "Premium Science & Medical Learning Platform",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#08080a",
+  "theme_color": "#E5D3B3",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/isometric/512/medical-doctor.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

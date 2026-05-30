@@ -1,22 +1,7 @@
 services:
-  - name: axyomis-api
-    type: web
-    env: node
-    plan: free
-    buildCommand: pnpm install && pnpm --filter=@workspace/api-server run build
-    startCommand: pnpm --filter=@workspace/api-server run start
-    envVars:
-      - key: GROQ_API_KEY
-        sync: false
-      - key: YOUTUBE_API_KEY
-        value: AIzaSyAGzqGwtomo0Pjku0LI_51R5P0AX-ehWbE
-  - name: axyomis-chatbot
+  - name: axyomis-x
     type: web
     plan: free
     env: static
-    buildCommand: pnpm --filter=@workspace/axyomis run build
-    staticPublishPath: ./artifacts/axyomis/dist
-    routes:
-      - type: rewrite
-        source: /api/*
-        destination: https://axyomis-api.onrender.com/api/*
+    buildCommand: npm install --prefix Axyomis-X && npm run --prefix Axyomis-X build
+    staticPublishPath: ./Axyomis-X/dist

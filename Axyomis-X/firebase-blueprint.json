@@ -1,0 +1,52 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and settings information.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The unique Firebase Auth UID of the user."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Full name of the user."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email address."
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Profile picture URL or base64 data."
+        },
+        "gender": {
+          "type": "string",
+          "enum": ["male", "female", "other", "prefer-not-to-say"],
+          "description": "Biological or identified gender."
+        },
+        "bio": {
+          "type": "string",
+          "description": "Short bio or description."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "email"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Private user profile documents accessible only by the owner."
+    }
+  }
+}
