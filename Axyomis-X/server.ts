@@ -5,7 +5,7 @@ import axios from "axios";
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.PORT || 3000;
 
   app.use(express.json());
 
@@ -104,16 +104,14 @@ async function startServer() {
     }
   });
 
-  // Vite middleware for development
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: "spa",
+      appType: 'spa',
     });
     app.use(vite.middlewares);
   } else {
-    const __dirname = path.dirname(new URL(import.meta.url).pathname);
-    const distPath = path.resolve(__dirname, 'dist');
+    const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
