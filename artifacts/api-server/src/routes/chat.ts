@@ -1,5 +1,5 @@
-const { Router } = require('express');
-const Groq = require('groq-sdk');
+import { Router } from 'express';
+import Groq from 'groq-sdk';
 
 const router = Router();
 
@@ -42,4 +42,4 @@ router.post('/', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

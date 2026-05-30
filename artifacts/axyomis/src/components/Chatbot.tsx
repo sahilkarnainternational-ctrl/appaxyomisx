@@ -50,11 +50,11 @@ const Mermaid: React.FC<{ chart: string }> = ({ chart }) => {
         } catch (initialErr) {
           // If the initial render fails, we apply our heuristic fixes
           
-          // Fix invalid node quoted syntaxes like A(\"Text\") -> A[\"Text\"]
-          processedChart = processedChart.replace(/\(\"\\s*([^\"]+?)\\"\\s*\)/g, '[\"$1\"]');
+          // Fix invalid node quoted syntaxes like A("Text") -> A["Text"]
+          processedChart = processedChart.replace(/\("\\s*([^"]+?)\"\\s*\)/g, '["$1"]');
           
-          // Fix invalid edge text syntaxes like A -- \"Text\" --> B  ->  A -->|\"Text\"| B
-          processedChart = processedChart.replace(/--\\s*\"?([^\"]+?)\"?\\s*-->/g, '-->|\"$1\"|');
+          // Fix invalid edge text syntaxes like A -- "Text" --> B  ->  A -->|"Text"| B
+          processedChart = processedChart.replace(/--\\s*"?([^"]+?)"?\\s*-->/g, '-->|"$1"|');
 
           finalChartToRender = processedChart;
         }
@@ -71,9 +71,9 @@ const Mermaid: React.FC<{ chart: string }> = ({ chart }) => {
 
   if (error) {
     return (
-      <div className=\"my-8 p-8 bg-red-500/5 border border-red-500/10 rounded-[40px] text-red-400/80 text-sm italic font-medium backdrop-blur-xl\">
-        <div className=\"flex items-center gap-3 mb-3 font-black uppercase tracking-widest text-[9px] text-red-500\">
-          <X className=\"w-3.5 h-3.5\" />
+      <div className="my-8 p-8 bg-red-500/5 border border-red-500/10 rounded-[40px] text-red-400/80 text-sm italic font-medium backdrop-blur-xl">
+        <div className="flex items-center gap-3 mb-3 font-black uppercase tracking-widest text-[9px] text-red-500">
+          <X className="w-3.5 h-3.5" />
           Neural Schema Invalidation
         </div>
         Astra encountered a structural conflict in this visualization lattice.
@@ -81,16 +81,16 @@ const Mermaid: React.FC<{ chart: string }> = ({ chart }) => {
     );
   }
 
-  if (!svg) return <div className=\"animate-pulse bg-white/5 h-64 rounded-[40px] flex items-center justify-center text-blue-400/40 text-[9px] font-black uppercase tracking-[0.4em] border border-white/5\">Architecting Visual Logic...</div>;
+  if (!svg) return <div className="animate-pulse bg-white/5 h-64 rounded-[40px] flex items-center justify-center text-blue-400/40 text-[9px] font-black uppercase tracking-[0.4em] border border-white/5">Architecting Visual Logic...</div>;
 
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.98, y: 10 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      className=\"mermaid-container my-10 bg-black/60 p-12 rounded-[48px] border border-white/5 overflow-x-auto shadow-[0_40px_80px_rgba(0,0,0,0.4)] backdrop-blur-3xl group\"
+      className="mermaid-container my-10 bg-black/60 p-12 rounded-[48px] border border-white/5 overflow-x-auto shadow-[0_40px_80px_rgba(0,0,0,0.4)] backdrop-blur-3xl group"
     >
       <div 
-        className=\"flex justify-center\"
+        className="flex justify-center"
         dangerouslySetInnerHTML={{ __html: svg }} 
       />
     </motion.div>
@@ -107,26 +107,26 @@ const GroundingSources: React.FC<{ metadata: any }> = ({ metadata }) => {
   if (sources.length === 0) return null;
 
   return (
-    <div className=\"mt-6 pt-6 border-t border-white/5 flex flex-col gap-4\">
-      <div className=\"flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-500/60\">
-        <Sparkles className=\"w-3 h-3\" />
+    <div className="mt-6 pt-6 border-t border-white/5 flex flex-col gap-4">
+      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-500/60">
+        <Sparkles className="w-3 h-3" />
         Neural Source Grounding
       </div>
-      <div className=\"flex flex-wrap gap-3\">
+      <div className="flex flex-wrap gap-3">
         {sources.map((source: any, i: number) => (
           <motion.a
             key={i}
             href={source.uri}
-            target=\"_blank\"
-            rel=\"noopener noreferrer\"
+            target="_blank"
+            rel="noopener noreferrer"
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className=\"flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl text-xs text-slate-400 hover:text-blue-400 transition-all backdrop-blur-md\"
+            className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl text-xs text-slate-400 hover:text-blue-400 transition-all backdrop-blur-md"
           >
-            <div className=\"w-1.5 h-1.5 rounded-full bg-blue-500/40\" />
-            <span className=\"truncate max-w-[200px]\">{source.title || 'Source Reference'}</span>
-            <ChevronRight className=\"w-3 h-3 opacity-30\" />
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-500/40" />
+            <span className="truncate max-w-[200px]">{source.title || 'Source Reference'}</span>
+            <ChevronRight className="w-3 h-3 opacity-30" />
           </motion.a>
         ))}
       </div>
@@ -148,21 +148,21 @@ const YouTubeGallery: React.FC<{ videoData?: VideoGroup }> = ({ videoData }) => 
 
   return (
     <>
-      <div className=\"mt-10 pt-10 border-t border-white/10\">
-        <div className=\"flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4\">
-          <div className=\"flex items-center gap-3\">
-            <div className=\"w-10 h-10 bg-red-500/10 rounded-2xl flex items-center justify-center shrink-0\">
-              <svg viewBox=\"0 0 24 24\" className=\"w-6 h-6 fill-red-500\">
-                <path d=\"M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385-8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 4-8 4z\" />
+      <div className="mt-10 pt-10 border-t border-white/10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-red-500/10 rounded-2xl flex items-center justify-center shrink-0">
+              <svg viewBox="0 0 24 24" className="w-6 h-6 fill-red-500">
+                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385-8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 4-8 4z" />
               </svg>
             </div>
             <div>
-              <div className=\"text-[10px] font-black uppercase tracking-[0.4em] text-red-500/60\">Neural Media Network</div>
-              <div className=\"text-sm text-white font-black uppercase tracking-widest mt-0.5\">Categorized Lectures & Modules</div>
+              <div className="text-[10px] font-black uppercase tracking-[0.4em] text-red-500/60">Neural Media Network</div>
+              <div className="text-sm text-white font-black uppercase tracking-widest mt-0.5">Categorized Lectures & Modules</div>
             </div>
           </div>
 
-          <div className=\"flex gap-1.5 p-1.5 bg-white/5 rounded-2xl border border-white/10 overflow-x-auto scrollbar-none\">
+          <div className="flex gap-1.5 p-1.5 bg-white/5 rounded-2xl border border-white/10 overflow-x-auto scrollbar-none">
             {(['english', 'hindi', 'nepali'] as const).map((l) => (
               <button
                 key={l}
@@ -176,14 +176,14 @@ const YouTubeGallery: React.FC<{ videoData?: VideoGroup }> = ({ videoData }) => 
           </div>
         </div>
 
-        <AnimatePresence mode=\"popLayout\">
+        <AnimatePresence mode="popLayout">
           <motion.div 
             key={lang}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6\"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {currentVideos.map((video, i) => (
               <motion.button
@@ -195,35 +195,35 @@ const YouTubeGallery: React.FC<{ videoData?: VideoGroup }> = ({ videoData }) => 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className=\"group flex flex-col bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-white/10 rounded-[32px] overflow-hidden transition-all shadow-xl text-left h-full\"
+                className="group flex flex-col bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-white/10 rounded-[32px] overflow-hidden transition-all shadow-xl text-left h-full"
               >
-              <div className=\"relative aspect-video overflow-hidden bg-white/5\">
+              <div className="relative aspect-video overflow-hidden bg-white/5">
                 <img 
                   src={video.thumbnail} 
                   alt={video.title}
-                  className=\"w-full h-full object-cover group-hover:scale-105 transition-transform duration-700\"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className=\"absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 backdrop-blur-[2px]\">
-                  <div className=\"w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20\">
-                    <svg viewBox=\"0 0 24 24\" className=\"w-5 h-5 fill-white\">
-                      <path d=\"M8 5v14l11-7z\" />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 backdrop-blur-[2px]">
+                  <div className="w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20">
+                    <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white">
+                      <path d="M8 5v14l11-7z" />
                     </svg>
                   </div>
                 </div>
-                <div className=\"absolute top-3 left-3 px-2 py-1 bg-blue-500/80 backdrop-blur-md rounded-md text-[8px] font-black text-white uppercase tracking-widest\">
+                <div className="absolute top-3 left-3 px-2 py-1 bg-blue-500/80 backdrop-blur-md rounded-md text-[8px] font-black text-white uppercase tracking-widest">
                   {i === 0 ? 'Core MODULE' : i < 4 ? 'Explainer' : 'Solving'}
                 </div>
               </div>
-              <div className=\"p-6 flex-1 flex flex-col gap-3\">
-                <h5 className=\"text-[12px] font-bold text-white line-clamp-2 leading-relaxed group-hover:text-blue-400 transition-colors\" dangerouslySetInnerHTML={{__html: video.title}} />
+              <div className="p-6 flex-1 flex flex-col gap-3">
+                <h5 className="text-[12px] font-bold text-white line-clamp-2 leading-relaxed group-hover:text-blue-400 transition-colors" dangerouslySetInnerHTML={{__html: video.title}} />
                 {video.description && (
-                  <p className=\"text-[10px] text-slate-500 line-clamp-2 leading-relaxed opacity-60 group-hover:opacity-80 transition-opacity\">
+                  <p className="text-[10px] text-slate-500 line-clamp-2 leading-relaxed opacity-60 group-hover:opacity-80 transition-opacity">
                     {video.description}
                   </p>
                 )}
-                <div className=\"mt-auto flex items-center justify-between pt-4 border-t border-white/5\">
-                  <span className=\"text-[9px] font-black text-slate-500 uppercase tracking-widest\">{video.channelTitle}</span>
-                  <ChevronRight className=\"w-3 h-3 text-slate-700 group-hover:translate-x-1 transition-transform\" />
+                <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5">
+                  <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">{video.channelTitle}</span>
+                  <ChevronRight className="w-3 h-3 text-slate-700 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </motion.button>
@@ -238,36 +238,36 @@ const YouTubeGallery: React.FC<{ videoData?: VideoGroup }> = ({ videoData }) => 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className=\"fixed inset-0 z-[250] flex items-center justify-center p-2 md:p-4 bg-black/95 backdrop-blur-2xl overflow-y-auto\" 
+            className="fixed inset-0 z-[250] flex items-center justify-center p-2 md:p-4 bg-black/95 backdrop-blur-2xl overflow-y-auto" 
             onClick={() => setPlayingVideo(null)}
           >
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className=\"relative w-full max-w-7xl bg-[#0d0d10] rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_60px_150px_rgba(0,0,0,1)] border border-white/10 flex flex-col lg:flex-row min-h-[85vh] lg:h-[90vh] my-auto\" 
+              className="relative w-full max-w-7xl bg-[#0d0d10] rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_60px_150px_rgba(0,0,0,1)] border border-white/10 flex flex-col lg:flex-row min-h-[85vh] lg:h-[90vh] my-auto" 
               onClick={e => e.stopPropagation()}
             >
-              <div className=\"flex-1 flex flex-col min-h-0 bg-black\">
-                <div className=\"flex items-center justify-between p-4 md:p-8 border-b border-white/5 bg-black/40 backdrop-blur-md sticky top-0 z-20 shrink-0\">
-                  <div className=\"flex flex-col gap-1 min-w-0\">
-                    <h3 className=\"text-white font-black uppercase tracking-widest text-[10px] md:text-sm leading-tight max-w-2xl truncate\" dangerouslySetInnerHTML={{__html: playingVideo.title}} />
-                    <div className=\"flex items-center gap-4 text-[8px] md:text-[9px] font-black text-slate-500 uppercase tracking-widest\">
-                      <span className=\"truncate max-w-[100px] md:max-w-none\">{playingVideo.channelTitle}</span>
-                      <span className=\"w-1 h-1 bg-slate-800 rounded-full\" />
+              <div className="flex-1 flex flex-col min-h-0 bg-black">
+                <div className="flex items-center justify-between p-4 md:p-8 border-b border-white/5 bg-black/40 backdrop-blur-md sticky top-0 z-20 shrink-0">
+                  <div className="flex flex-col gap-1 min-w-0">
+                    <h3 className="text-white font-black uppercase tracking-widest text-[10px] md:text-sm leading-tight max-w-2xl truncate" dangerouslySetInnerHTML={{__html: playingVideo.title}} />
+                    <div className="flex items-center gap-4 text-[8px] md:text-[9px] font-black text-slate-500 uppercase tracking-widest">
+                      <span className="truncate max-w-[100px] md:max-w-none">{playingVideo.channelTitle}</span>
+                      <span className="w-1 h-1 bg-slate-800 rounded-full" />
                       <span>{currentVideoIds.indexOf(playingVideo.id) + 1} / {currentVideoIds.length} Modules</span>
                     </div>
                   </div>
-                  <div className=\"flex items-center gap-1.5 md:gap-2 ml-4\">
+                  <div className="flex items-center gap-1.5 md:gap-2 ml-4">
                     <button 
                       disabled={currentVideoIds.indexOf(playingVideo.id) === 0}
                       onClick={() => {
                         const idx = currentVideoIds.indexOf(playingVideo.id);
                         if (idx > 0) setPlayingVideo(currentVideos[idx - 1]);
                       }}
-                      className=\"w-9 h-9 md:w-12 md:h-12 bg-white/5 hover:bg-white/10 disabled:opacity-20 rounded-xl md:rounded-2xl flex items-center justify-center text-slate-400 transition-all\"
+                      className="w-9 h-9 md:w-12 md:h-12 bg-white/5 hover:bg-white/10 disabled:opacity-20 rounded-xl md:rounded-2xl flex items-center justify-center text-slate-400 transition-all"
                     >
-                      <ChevronRight className=\"w-4 h-4 md:w-6 md:h-6 rotate-180\" />
+                      <ChevronRight className="w-4 h-4 md:w-6 md:h-6 rotate-180" />
                     </button>
                     <button 
                       disabled={currentVideoIds.indexOf(playingVideo.id) === currentVideoIds.length - 1}
@@ -275,27 +275,27 @@ const YouTubeGallery: React.FC<{ videoData?: VideoGroup }> = ({ videoData }) => 
                         const idx = currentVideoIds.indexOf(playingVideo.id);
                         if (idx < currentVideoIds.length - 1) setPlayingVideo(currentVideos[idx + 1]);
                       }}
-                      className=\"w-9 h-9 md:w-12 md:h-12 bg-white/5 hover:bg-white/10 disabled:opacity-20 rounded-xl md:rounded-2xl flex items-center justify-center text-slate-400 transition-all\"
+                      className="w-9 h-9 md:w-12 md:h-12 bg-white/5 hover:bg-white/10 disabled:opacity-20 rounded-xl md:rounded-2xl flex items-center justify-center text-slate-400 transition-all"
                     >
-                      <ChevronRight className=\"w-4 h-4 md:w-6 md:h-6\" />
+                      <ChevronRight className="w-4 h-4 md:w-6 md:h-6" />
                     </button>
                     <button 
                       onClick={() => setPlayingVideo(null)} 
-                      className=\"w-9 h-9 md:w-12 md:h-12 bg-white/5 hover:bg-red-500/20 hover:text-red-500 rounded-xl md:rounded-2xl flex items-center justify-center text-slate-400 transition-all ml-1 md:ml-2\"
+                      className="w-9 h-9 md:w-12 md:h-12 bg-white/5 hover:bg-red-500/20 hover:text-red-500 rounded-xl md:rounded-2xl flex items-center justify-center text-slate-400 transition-all ml-1 md:ml-2"
                     >
-                      <X className=\"w-5 h-5 md:w-6 md:h-6\" />
+                      <X className="w-5 h-5 md:w-6 md:h-6" />
                     </button>
                   </div>
                 </div>
 
-                <div className=\"relative aspect-video lg:flex-1 bg-black overflow-hidden\">
+                <div className="relative aspect-video lg:flex-1 bg-black overflow-hidden">
                   {playbackError ? (
-                    <div className=\"absolute inset-0 flex flex-col items-center justify-center p-12 text-center gap-6\">
-                       <Activity className=\"w-12 h-12 text-red-500 animate-pulse\" />
-                       <h4 className=\"text-white font-black uppercase tracking-widest text-lg\">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center gap-6">
+                       <Activity className="w-12 h-12 text-red-500 animate-pulse" />
+                       <h4 className="text-white font-black uppercase tracking-widest text-lg">
                         {!navigator.onLine ? 'Network Disconnected' : 'Connection Disrupted'}
                        </h4>
-                       <p className=\"text-slate-500 text-sm max-w-sm\">
+                       <p className="text-slate-500 text-sm max-w-sm">
                         {!navigator.onLine 
                           ? 'Please check your internet connection and try again.' 
                           : playbackError || 'The media host refused the secure connection or the video is no longer available.'}
@@ -307,7 +307,7 @@ const YouTubeGallery: React.FC<{ videoData?: VideoGroup }> = ({ videoData }) => 
                            setPlayingVideo(null);
                            setTimeout(() => setPlayingVideo(current), 50);
                          }}
-                         className=\"px-6 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all\"
+                         className="px-6 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
                        >
                          Retry Synchronization
                        </button>
@@ -316,14 +316,14 @@ const YouTubeGallery: React.FC<{ videoData?: VideoGroup }> = ({ videoData }) => 
                     <iframe 
                       key={playingVideo.id}
                       src={`https://www.youtube.com/embed/${playingVideo.id}?autoplay=1&rel=0&modestbranding=1&showinfo=0`} 
-                      className=\"w-full h-full border-0 absolute inset-0\" 
-                      allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" 
+                      className="w-full h-full border-0 absolute inset-0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                       allowFullScreen
                       onError={() => {
                         if (!navigator.onLine) {
-                          setPlaybackError(\"Network unavailable. Please check your signal.\");
+                          setPlaybackError("Network unavailable. Please check your signal.");
                         } else {
-                          setPlaybackError(\"This content may be restricted in your region, private, or contains unsupported media codecs.\");
+                          setPlaybackError("This content may be restricted in your region, private, or contains unsupported media codecs.");
                         }
                       }}
                     />
@@ -331,43 +331,43 @@ const YouTubeGallery: React.FC<{ videoData?: VideoGroup }> = ({ videoData }) => 
                 </div>
               </div>
 
-              <div className=\"w-full lg:w-[400px] border-l border-white/5 flex flex-col bg-white/[0.01]\">
-                <div className=\"p-8 flex-1 overflow-y-auto space-y-8 scrollbar-thin scrollbar-thumb-white/10\">
-                   <div className=\"space-y-4\">
-                      <div className=\"flex items-center gap-3\">
-                        <div className=\"w-8 h-8 bg-blue-500/10 rounded-xl flex items-center justify-center\">
-                          <Cpu className=\"w-4 h-4 text-blue-500\" />
+              <div className="w-full lg:w-[400px] border-l border-white/5 flex flex-col bg-white/[0.01]">
+                <div className="p-8 flex-1 overflow-y-auto space-y-8 scrollbar-thin scrollbar-thumb-white/10">
+                   <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-blue-500/10 rounded-xl flex items-center justify-center">
+                          <Cpu className="w-4 h-4 text-blue-500" />
                         </div>
-                        <span className=\"text-[10px] font-black text-white uppercase tracking-[0.3em]\">Synaptic Insights</span>
+                        <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Synaptic Insights</span>
                       </div>
-                      <p className=\"text-[11px] text-slate-400 font-light leading-relaxed\">
-                        {playingVideo.description || \"Synthesizing deep-layer metadata from the scientific repository...\"}
+                      <p className="text-[11px] text-slate-400 font-light leading-relaxed">
+                        {playingVideo.description || "Synthesizing deep-layer metadata from the scientific repository..."}
                       </p>
                    </div>
 
-                   <div className=\"space-y-6\">
-                      <div className=\"flex items-center justify-between\">
-                        <div className=\"flex items-center gap-3\">
-                          <div className=\"w-8 h-8 bg-yellow-500/10 rounded-xl flex items-center justify-center\">
-                            <Plus className=\"w-4 h-4 text-yellow-500\" />
+                   <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-yellow-500/10 rounded-xl flex items-center justify-center">
+                            <Plus className="w-4 h-4 text-yellow-500" />
                           </div>
-                          <span className=\"text-[10px] font-black text-white uppercase tracking-[0.3em]\">Learning Path</span>
+                          <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Learning Path</span>
                         </div>
                       </div>
                       
-                      <div className=\"space-y-3\">
+                      <div className="space-y-3">
                         {currentVideos.filter(v => v.id !== playingVideo.id).slice(0, 10).map((v, idx) => (
                           <button 
                             key={v.id}
                             onClick={() => { setPlayingVideo(v); setPlaybackError(null); }}
-                            className=\"w-full flex items-center gap-4 p-3 bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-white/10 rounded-2xl transition-all group text-left\"
+                            className="w-full flex items-center gap-4 p-3 bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-white/10 rounded-2xl transition-all group text-left"
                           >
-                             <div className=\"w-20 aspect-video rounded-lg overflow-hidden bg-black shrink-0\">
-                               <img src={v.thumbnail} className=\"w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity\" />
+                             <div className="w-20 aspect-video rounded-lg overflow-hidden bg-black shrink-0">
+                               <img src={v.thumbnail} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
                              </div>
-                             <div className=\"flex-1 min-w-0\">
-                               <h6 className=\"text-[9px] text-white font-bold uppercase tracking-tight line-clamp-1\" dangerouslySetInnerHTML={{__html: v.title}} />
-                               <span className=\"text-[8px] text-slate-600 font-black uppercase tracking-widest mt-1 block\">Module {currentVideoIds.indexOf(v.id) + 1}</span>
+                             <div className="flex-1 min-w-0">
+                               <h6 className="text-[9px] text-white font-bold uppercase tracking-tight line-clamp-1" dangerouslySetInnerHTML={{__html: v.title}} />
+                               <span className="text-[8px] text-slate-600 font-black uppercase tracking-widest mt-1 block">Module {currentVideoIds.indexOf(v.id) + 1}</span>
                              </div>
                           </button>
                         ))}
@@ -375,13 +375,13 @@ const YouTubeGallery: React.FC<{ videoData?: VideoGroup }> = ({ videoData }) => 
                    </div>
                 </div>
 
-                <div className=\"p-8 border-t border-white/5\">
+                <div className="p-8 border-t border-white/5">
                    <button 
                      onClick={() => window.open(`https://www.youtube.com/watch?v=${playingVideo.id}`, '_blank')}
-                     className=\"w-full py-4 bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl text-[9px] font-black uppercase tracking-[0.3em] text-slate-300 transition-all flex items-center justify-center gap-3 group\"
+                     className="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl text-[9px] font-black uppercase tracking-[0.3em] text-slate-300 transition-all flex items-center justify-center gap-3 group"
                    >
                      External Sync Hub
-                     <ExternalLink className=\"w-3 h-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform\" />
+                     <ExternalLink className="w-3 h-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                    </button>
                 </div>
               </div>
@@ -397,12 +397,12 @@ const RelatedTopics: React.FC<{ topics: string[]; onTopicClick: (topic: string) 
   if (!topics || topics.length === 0) return null;
 
   return (
-    <div className=\"mt-10 pt-6 border-t border-white/10\">
-      <div className=\"flex items-center gap-3 mb-6\">
-        <BrainCircuit className=\"w-5 h-5 text-blue-400\" />
-        <h3 className=\"text-sm text-white font-black uppercase tracking-widest\">Related Topics</h3>
+    <div className="mt-10 pt-6 border-t border-white/10">
+      <div className="flex items-center gap-3 mb-6">
+        <BrainCircuit className="w-5 h-5 text-blue-400" />
+        <h3 className="text-sm text-white font-black uppercase tracking-widest">Related Topics</h3>
       </div>
-      <div className=\"flex flex-wrap gap-3\">
+      <div className="flex flex-wrap gap-3">
         {topics.map((topic, i) => (
           <motion.button
             key={i}
@@ -410,7 +410,7 @@ const RelatedTopics: React.FC<{ topics: string[]; onTopicClick: (topic: string) 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className=\"px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-slate-300 hover:text-white transition-all backdrop-blur-md font-semibold\"
+            className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-slate-300 hover:text-white transition-all backdrop-blur-md font-semibold"
           >
             {topic}
           </motion.button>
@@ -422,21 +422,21 @@ const RelatedTopics: React.FC<{ topics: string[]; onTopicClick: (topic: string) 
 
 const NeuralStream: React.FC<{ content: string; isStreaming: boolean; groundingMetadata?: any; isSpeaking?: boolean; relatedTopics?: string[]; onTopicClick: (topic: string) => void; }> = ({ content, isStreaming, groundingMetadata, isSpeaking, relatedTopics, onTopicClick }) => {
   return (
-    <div className=\"prose prose-invert prose-lg max-w-none prose-p:text-slate-300 prose-headings:text-white prose-strong:text-blue-400 prose-img:rounded-3xl prose-img:border prose-img:border-white/10 prose-p:leading-relaxed selection:bg-blue-500/30 relative\">
+    <div className="prose prose-invert prose-lg max-w-none prose-p:text-slate-300 prose-headings:text-white prose-strong:text-blue-400 prose-img:rounded-3xl prose-img:border prose-img:border-white/10 prose-p:leading-relaxed selection:bg-blue-500/30 relative">
       {isSpeaking && (
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className=\"absolute -inset-4 bg-green-500/5 rounded-[40px] pointer-events-none border border-green-500/10 shadow-[0_0_50px_rgba(34,197,94,0.05)] z-0 overflow-hidden\"
+          className="absolute -inset-4 bg-green-500/5 rounded-[40px] pointer-events-none border border-green-500/10 shadow-[0_0_50px_rgba(34,197,94,0.05)] z-0 overflow-hidden"
         >
           <motion.div 
             animate={{ y: ['-10%', '110%'] }}
-            transition={{ duration: 3, repeat: Infinity, ease: \"linear\" }}
-            className=\"absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-green-500/30 to-transparent blur-[1px] will-change-transform\"
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-green-500/30 to-transparent blur-[1px] will-change-transform"
           />
         </motion.div>
       )}
-      <div className=\"relative z-10\">
+      <div className="relative z-10">
         <Markdown 
           remarkPlugins={[remarkGfm, remarkMath]} 
           rehypePlugins={[rehypeKatex]}
@@ -481,14 +481,14 @@ const RobotIcon = ({ glow = false, variant = 'button' }: { glow?: boolean; varia
 
   if (is3D) {
     return (
-      <div className=\"relative w-full h-full flex items-center justify-center p-2\">
+      <div className="relative w-full h-full flex items-center justify-center p-2">
         <div className={`w-full h-full rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center relative overflow-hidden group-hover:bg-blue-500/20 transition-all duration-700 shadow-[0_0_30px_rgba(59,130,246,0.1)]`}>
           <Sparkles className={`w-1/2 h-1/2 text-blue-400 ${glow ? 'animate-pulse scale-110' : ''}`} />
           {glow && (
             <motion.div 
               animate={{ opacity: [0.1, 0.4, 0.1], scale: [1, 1.2, 1] }}
               transition={{ repeat: Infinity, duration: 2 }}
-              className=\"absolute inset-0 bg-blue-400/5 blur-xl\" 
+              className="absolute inset-0 bg-blue-400/5 blur-xl" 
             />
           )}
         </div>
@@ -498,26 +498,26 @@ const RobotIcon = ({ glow = false, variant = 'button' }: { glow?: boolean; varia
 
   // Refined professional static robot icon (Astra-style SVG)
   return (
-    <div className=\"relative w-full h-full flex items-center justify-center p-1\">
+    <div className="relative w-full h-full flex items-center justify-center p-1">
       <AnimatePresence>
         {glow && (
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1.4 }}
             exit={{ opacity: 0 }}
-            className=\"absolute inset-0 bg-blue-400/20 blur-xl rounded-full\"
+            className="absolute inset-0 bg-blue-400/20 blur-xl rounded-full"
           />
         )}
       </AnimatePresence>
-      <svg viewBox=\"0 0 40 40\" className=\"w-full h-full relative z-10 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]\">
+      <svg viewBox="0 0 40 40" className="w-full h-full relative z-10 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]">
         <defs>
-          <linearGradient id=\"astraGrad\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"100%\">
-            <stop offset=\"0%\" stopColor=\"#ffffff\" />
-            <stop offset=\"100%\" stopColor=\"#64748b\" />
+          <linearGradient id="astraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#64748b" />
           </linearGradient>
-          <radialGradient id=\"eyeGlow\" cx=\"50%\" cy=\"50%\" r=\"50%\">
-            <stop offset=\"0%\" stopColor=\"#60a5fa\" />
-            <stop offset=\"100%\" stopColor=\"#1e3a8a\" />
+          <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#60a5fa" />
+            <stop offset="100%" stopColor="#1e3a8a" />
           </radialGradient>
         </defs>
         <motion.g
@@ -528,16 +528,16 @@ const RobotIcon = ({ glow = false, variant = 'button' }: { glow?: boolean; varia
           transition={{ 
             duration: 8, 
             repeat: Infinity, 
-            ease: \"easeInOut\" 
+            ease: "easeInOut" 
           }}
         >
           {/* Main Head Shell */}
-          <path d=\"M20 5C12 5 7 10 7 18C7 26 12 32 20 32C28 32 33 26 33 18C33 10 28 5 20 5Z\" fill=\"#050505\" stroke=\"url(#astraGrad)\" strokeWidth=\"0.8\" />
+          <path d="M20 5C12 5 7 10 7 18C7 26 12 32 20 32C28 32 33 26 33 18C33 10 28 5 20 5Z" fill="#050505" stroke="url(#astraGrad)" strokeWidth="0.8" />
           {/* Face Plate */}
-          <path d=\"M12 15C12 12 15 10 20 10C25 10 28 12 28 15V22C28 26 24 28 20 28C16 28 12 26 12 22V15Z\" fill=\"#000\" stroke=\"white/10\" strokeWidth=\"0.5\" />
+          <path d="M12 15C12 12 15 10 20 10C25 10 28 12 28 15V22C28 26 24 28 20 28C16 28 12 26 12 22V15Z" fill="#000" stroke="white/10" strokeWidth="0.5" />
           {/* Eye Visors */}
           <motion.ellipse 
-            cx=\"17\" cy=\"18\" rx=\"2.5\" ry=\"1.5\" 
+            cx="17" cy="18" rx="2.5" ry="1.5" 
             initial={{ opacity: 1, scaleY: 1 }}
             animate={{ 
               opacity: glow ? [0.4, 1, 0.4] : 1, 
@@ -548,10 +548,10 @@ const RobotIcon = ({ glow = false, variant = 'button' }: { glow?: boolean; varia
               repeat: Infinity, 
               times: [0, 0.3, 0.35, 0.37, 0.39, 0.7, 0.75, 0.77, 0.79, 0.81, 0.83, 1] 
             }}
-            fill=\"url(#eyeGlow)\" 
+            fill="url(#eyeGlow)" 
           />
           <motion.ellipse 
-            cx=\"23\" cy=\"18\" rx=\"2.5\" ry=\"1.5\" 
+            cx="23" cy="18" rx="2.5" ry="1.5" 
             initial={{ opacity: 1, scaleY: 1 }}
             animate={{ 
               opacity: glow ? [0.4, 1, 0.4] : 1, 
@@ -562,11 +562,11 @@ const RobotIcon = ({ glow = false, variant = 'button' }: { glow?: boolean; varia
               repeat: Infinity, 
               times: [0, 0.3, 0.35, 0.37, 0.39, 0.7, 0.75, 0.77, 0.79, 0.81, 0.83, 1] 
             }}
-            fill=\"url(#eyeGlow)\" 
+            fill="url(#eyeGlow)" 
           />
           {/* Detail Lines */}
-          <path d=\"M15 8L10 6M25 8L30 6\" stroke=\"white/20\" strokeWidth=\"0.5\" strokeLinecap=\"round\" />
-          <circle cx=\"20\" cy=\"5\" r=\"1\" fill=\"#3b82f6\" opacity=\"0.8\" />
+          <path d="M15 8L10 6M25 8L30 6" stroke="white/20" strokeWidth="0.5" strokeLinecap="round" />
+          <circle cx="20" cy="5" r="1" fill="#3b82f6" opacity="0.8" />
         </motion.g>
       </svg>
     </div>
@@ -574,22 +574,22 @@ const RobotIcon = ({ glow = false, variant = 'button' }: { glow?: boolean; varia
 };
 
 const TeacherViewport = () => (
-  <div className=\"relative w-full aspect-square md:aspect-auto md:h-[440px] bg-black/40 rounded-[32px] overflow-hidden border border-white/10 group shadow-2xl\">
-    <div className=\"absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent opacity-50\" />
-    <div className=\"absolute inset-0\">
+  <div className="relative w-full aspect-square md:aspect-auto md:h-[440px] bg-black/40 rounded-[32px] overflow-hidden border border-white/10 group shadow-2xl">
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent opacity-50" />
+    <div className="absolute inset-0">
       <iframe 
-        title=\"Astra Lumen II, a rigged companion android\" 
-        frameBorder=\"0\" 
+        title="Astra Lumen II, a rigged companion android" 
+        frameBorder="0" 
         allowFullScreen 
-        className=\"w-full h-full absolute top-2 scale-[0.7] grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000 pointer-events-none\"
-        allow=\"autoplay; fullscreen; xr-spatial-tracking\" 
-        src=\"https://sketchfab.com/models/84761f55aa17493d9b226bb1f7101428/embed?autostart=1&preload=1&transparent=1&ui_hint=0&ui_infos=0&ui_stop=0&ui_watermark=0&orbit=0&camera=0\"
+        className="w-full h-full absolute top-2 scale-[0.7] grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000 pointer-events-none"
+        allow="autoplay; fullscreen; xr-spatial-tracking" 
+        src="https://sketchfab.com/models/84761f55aa17493d9b226bb1f7101428/embed?autostart=1&preload=1&transparent=1&ui_hint=0&ui_infos=0&ui_stop=0&ui_watermark=0&orbit=0&camera=0"
       />
     </div>
-    <div className=\"absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none\">
-      <div className=\"flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10\">
-        <div className=\"w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(59,130,246,1)]\" />
-        <span className=\"text-[9px] text-blue-400 font-black uppercase tracking-[0.2em]\">Astra is Online</span>
+    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+      <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+        <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(59,130,246,1)]" />
+        <span className="text-[9px] text-blue-400 font-black uppercase tracking-[0.2em]">Astra is Online</span>
       </div>
     </div>
   </div>
@@ -632,7 +632,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onStateChange, externalOpen, s
       }
       setIsConversationMode(true);
       setConversationTimeLeft(30 * 60);
-      generateVoice(\"Conversation mode initialized. Astra is ready for neural dialogue. This link will remain active for thirty minutes.\");
+      generateVoice("Conversation mode initialized. Astra is ready for neural dialogue. This link will remain active for thirty minutes.");
     } else {
       setIsConversationMode(false);
       stopCurrentAudio();
@@ -653,7 +653,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onStateChange, externalOpen, s
             const limitMsg: Message = {
               id: generateId(),
               role: 'assistant',
-              content: \"### ⏲️ Temporal Limit Reached\nOur neural voice link has reached its 30-minute safety threshold. We can continue via text, or you can re-initialize the voice uplink.\",
+              content: "### ⏲️ Temporal Limit Reached\nOur neural voice link has reached its 30-minute safety threshold. We can continue via text, or you can re-initialize the voice uplink.",
             };
             setMessages(prevMsgs => [...prevMsgs, limitMsg]);
             return 0;
@@ -845,14 +845,14 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onStateChange, externalOpen, s
           const errorMsg: Message = {
             id: generateId(),
             role: 'assistant',
-            content: \"### ⚠️ Mic Access Denied\nMicrophone access was denied. Please ensure you have granted permission in your browser settings. If you're in the AI Studio preview, you may need to open the application in a new tab to bypass iframe permission constraints.\"
+            content: "### ⚠️ Mic Access Denied\nMicrophone access was denied. Please ensure you have granted permission in your browser settings. If you're in the AI Studio preview, you may need to open the application in a new tab to bypass iframe permission constraints."
           };
           setMessages(prev => [...prev, errorMsg]);
         } else if (event.error === 'network') {
           const errorMsg: Message = {
             id: generateId(),
             role: 'assistant',
-            content: \"### ⚠️ System Disruption\nA network error occurred while processing your voice query. Please verify your connection and try again.\"
+            content: "### ⚠️ System Disruption\nA network error occurred while processing your voice query. Please verify your connection and try again."
           };
           setMessages(prev => [...prev, errorMsg]);
         }
@@ -931,7 +931,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onStateChange, externalOpen, s
         const parsed = JSON.parse(saved);
         setSessions(parsed);
       } catch (e) {
-        console.error(\"Failed to parse history\", e);
+        console.error("Failed to parse history", e);
       }
     }
   }, []);
@@ -996,7 +996,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
 
   useEffect(() => {
     if (isOpen) {
-      const bootPhrase = \"HELLO I AM ASTRA THE ROBO SPEED ONE TERAHEARTZ MEMORY ONE ZETABYTE\";
+      const bootPhrase = "HELLO I AM ASTRA THE ROBO SPEED ONE TERAHEARTZ MEMORY ONE ZETABYTE";
 
       setShowBootSequence(true);
       setBootText(bootPhrase);
@@ -1137,7 +1137,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
               }
             }
           } catch (e) {
-            console.warn(\"Failed to parse SSE chunk:\", e, eventString);
+            console.warn("Failed to parse SSE chunk:", e, eventString);
           }
         }
       }
@@ -1154,7 +1154,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
           videoData = await fetchMultilingualVideos(query);
           finalAssistantMessage = finalAssistantMessage.replace(ytSearchMatch[0], '').trim();
         } catch (ytError) {
-          console.error(\"Failed to fetch YouTube videos:\", ytError);
+          console.error("Failed to fetch YouTube videos:", ytError);
         }
       }
 
@@ -1173,10 +1173,10 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
       );
 
     } catch (error: any) {
-      console.error(\"Chatbot Error:\", error);
-      let errorMessage = \"Sorry, something went wrong. Please try again.\";
+      console.error("Chatbot Error:", error);
+      let errorMessage = "Sorry, something went wrong. Please try again.";
       if (error.message.includes('Network')) {
-        errorMessage = \"Network error. Please check your connection.\";
+        errorMessage = "Network error. Please check your connection.";
       }
       setMessages(prev => [...prev, { id: generateId(), role: 'assistant', content: errorMessage }]);
     } finally {
@@ -1225,16 +1225,16 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, backdropFilter: \"blur(0px)\" }}
-            animate={{ opacity: 1, backdropFilter: \"blur(40px)\" }}
-            exit={{ opacity: 0, backdropFilter: \"blur(0px)\" }}
-            className=\"fixed inset-0 z-[400] bg-black/60 flex flex-col md:flex-row overflow-hidden font-sans selection:bg-blue-500/20 h-[100dvh]\"
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(40px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            className="fixed inset-0 z-[400] bg-black/60 flex flex-col md:flex-row overflow-hidden font-sans selection:bg-blue-500/20 h-[100dvh]"
           >
             {/* Mobile sidebar backdrop */}
             {isSidebarOpen && (
               <div
                 onClick={() => setIsSidebarOpen(false)}
-                className=\"md:hidden fixed inset-0 z-[10] bg-black/60 backdrop-blur-sm\"
+                className="md:hidden fixed inset-0 z-[10] bg-black/60 backdrop-blur-sm"
               />
             )}
             {/* Sidebar (drawer on mobile, in-flow on desktop) */}
@@ -1248,40 +1248,40 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
               className={`${isSidebarOpen ? 'flex' : 'hidden'} md:flex flex-col h-full bg-[#050505]/95 border-r border-white/5 relative overflow-hidden backdrop-blur-xl fixed md:relative inset-y-0 left-0 z-[20] md:z-auto`}
             >
-              <div className=\"w-[340px] h-full flex flex-col p-10 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-blue-900/10 via-transparent to-transparent\">
-                <div className=\"flex items-center gap-5 mb-14\">
-                  <div className=\"w-14 h-14 bg-blue-500/5 border border-blue-500/10 rounded-2xl flex items-center justify-center p-3 relative group shadow-2xl overflow-hidden\">
-                    <div className=\"absolute inset-0 bg-blue-500/10 blur-2xl opacity-100\" />
-                    <Sparkles className=\"w-full h-full text-blue-400 relative z-10\" />
+              <div className="w-[340px] h-full flex flex-col p-10 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-blue-900/10 via-transparent to-transparent">
+                <div className="flex items-center gap-5 mb-14">
+                  <div className="w-14 h-14 bg-blue-500/5 border border-blue-500/10 rounded-2xl flex items-center justify-center p-3 relative group shadow-2xl overflow-hidden">
+                    <div className="absolute inset-0 bg-blue-500/10 blur-2xl opacity-100" />
+                    <Sparkles className="w-full h-full text-blue-400 relative z-10" />
                   </div>
                   <div>
-                    <h2 className=\"text-white font-[900] tracking-[0.4em] text-sm uppercase\">Astra</h2>
-                    <p className=\"text-[10px] text-blue-500 font-black tracking-[0.4em] uppercase mt-1\">Intelligence Core 2.0</p>
+                    <h2 className="text-white font-[900] tracking-[0.4em] text-sm uppercase">Astra</h2>
+                    <p className="text-[10px] text-blue-500 font-black tracking-[0.4em] uppercase mt-1">Intelligence Core 2.0</p>
                   </div>
                 </div>
                 
-                  <div className=\"mb-10 px-2\">
-                    <div className=\"text-[10px] text-slate-600 font-bold uppercase tracking-[0.4em] mb-4 flex items-center gap-2\">
-                      <Sparkles className=\"w-3 h-3 text-blue-500\" />
+                  <div className="mb-10 px-2">
+                    <div className="text-[10px] text-slate-600 font-bold uppercase tracking-[0.4em] mb-4 flex items-center gap-2">
+                      <Sparkles className="w-3 h-3 text-blue-500" />
                       AI Connection Synchronized
                     </div>
                   </div>
                 
                 <button 
                   onClick={startNewSession} 
-                  className=\"flex items-center gap-5 w-full bg-white/[0.03] hover:bg-white/[0.08] text-white/90 hover:text-white px-6 py-5 rounded-[24px] transition-all mb-12 group border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.4)]\"
+                  className="flex items-center gap-5 w-full bg-white/[0.03] hover:bg-white/[0.08] text-white/90 hover:text-white px-6 py-5 rounded-[24px] transition-all mb-12 group border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
                 >
-                  <Plus className=\"w-6 h-6 group-hover:rotate-90 transition-transform text-blue-500\" />
-                  <span className=\"text-base font-black tracking-wide\">Synthesize Session</span>
+                  <Plus className="w-6 h-6 group-hover:rotate-90 transition-transform text-blue-500" />
+                  <span className="text-base font-black tracking-wide">Synthesize Session</span>
                 </button>
 
-                <div className=\"flex-1 space-y-10 overflow-y-auto scrollbar-none\">
+                <div className="flex-1 space-y-10 overflow-y-auto scrollbar-none">
                   <div>
-                    <div className=\"text-[11px] uppercase tracking-[0.4em] text-slate-700 font-black px-4 mb-8\">Interaction History</div>
-                    <div className=\"space-y-3\">
+                    <div className="text-[11px] uppercase tracking-[0.4em] text-slate-700 font-black px-4 mb-8">Interaction History</div>
+                    <div className="space-y-3">
                       {sessions.length === 0 ? (
-                        <div className=\"px-4 py-8 text-center border border-dashed border-white/5 rounded-2xl\">
-                          <p className=\"text-[10px] text-slate-800 uppercase tracking-widest font-black\">No logs found</p>
+                        <div className="px-4 py-8 text-center border border-dashed border-white/5 rounded-2xl">
+                          <p className="text-[10px] text-slate-800 uppercase tracking-widest font-black">No logs found</p>
                         </div>
                       ) : (
                         sessions.map((session) => (
@@ -1291,7 +1291,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                             key={session.id} 
                             onClick={() => loadSession(session)}
                             onKeyDown={(e) => e.key === 'Enter' && loadSession(session)}
-                            role=\"button\"
+                            role="button"
                             tabIndex={0}
                             className={`flex items-center gap-5 w-full px-5 py-4 rounded-2xl text-sm transition-all group border cursor-pointer outline-none ${
                               activeSessionId === session.id 
@@ -1300,17 +1300,17 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                             }`}
                           >
                             <History className={`w-4 h-4 shrink-0 transition-opacity ${activeSessionId === session.id ? 'opacity-100 text-blue-500' : 'opacity-40 group-hover:opacity-100'}`} />
-                            <div className=\"flex-1 text-left min-w-0\">
-                              <div className=\"truncate font-bold tracking-wide\">{session.title}</div>
-                              <div className=\"text-[9px] opacity-40 uppercase tracking-[0.1em] mt-0.5\">
+                            <div className="flex-1 text-left min-w-0">
+                              <div className="truncate font-bold tracking-wide">{session.title}</div>
+                              <div className="text-[9px] opacity-40 uppercase tracking-[0.1em] mt-0.5">
                                 {new Date(session.timestamp).toLocaleDateString()}
                               </div>
                             </div>
                             <button 
                               onClick={(e) => deleteSession(e, session.id)}
-                              className=\"opacity-0 group-hover:opacity-60 hover:opacity-100 p-2 hover:bg-white/10 rounded-lg transition-all\"
+                              className="opacity-0 group-hover:opacity-60 hover:opacity-100 p-2 hover:bg-white/10 rounded-lg transition-all"
                             >
-                              <X className=\"w-3.5 h-3.5 text-slate-500\" />
+                              <X className="w-3.5 h-3.5 text-slate-500" />
                             </button>
                           </motion.div>
                         ))
@@ -1319,48 +1319,48 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                   </div>
                 </div>
 
-                <div className=\"pt-8 border-t border-white/5 space-y-2\">
-                   <button onClick={() => { setIsQuizOpen(true); setQuizTopic(messages.length > 0 ? messages[messages.length - 1].content : 'Science'); }} className=\"flex items-center gap-5 w-full hover:bg-white/[0.04] text-slate-500 hover:text-slate-100 px-5 py-4 rounded-2xl text-sm transition-all group\">
-                    <BrainCircuit className=\"w-5 h-5 group-hover:text-blue-500 transition-colors\" />
-                    <span className=\"font-black tracking-widest uppercase text-[10px]\">Quizzes</span>
+                <div className="pt-8 border-t border-white/5 space-y-2">
+                   <button onClick={() => { setIsQuizOpen(true); setQuizTopic(messages.length > 0 ? messages[messages.length - 1].content : 'Science'); }} className="flex items-center gap-5 w-full hover:bg-white/[0.04] text-slate-500 hover:text-slate-100 px-5 py-4 rounded-2xl text-sm transition-all group">
+                    <BrainCircuit className="w-5 h-5 group-hover:text-blue-500 transition-colors" />
+                    <span className="font-black tracking-widest uppercase text-[10px]">Quizzes</span>
                   </button>
-                  <button onClick={() => setIsTopicMapOpen(true)} className=\"flex items-center gap-5 w-full hover:bg-white/[0.04] text-slate-500 hover:text-slate-100 px-5 py-4 rounded-2xl text-sm transition-all group\">
-                    <LayoutGrid className=\"w-5 h-5 group-hover:text-blue-500 transition-colors\" />
-                    <span className=\"font-black tracking-widest uppercase text-[10px]\">Topic Map</span>
+                  <button onClick={() => setIsTopicMapOpen(true)} className="flex items-center gap-5 w-full hover:bg-white/[0.04] text-slate-500 hover:text-slate-100 px-5 py-4 rounded-2xl text-sm transition-all group">
+                    <LayoutGrid className="w-5 h-5 group-hover:text-blue-500 transition-colors" />
+                    <span className="font-black tracking-widest uppercase text-[10px]">Topic Map</span>
                   </button>
                   <button 
                     onClick={() => setIsGuideOpen(true)}
-                    className=\"flex items-center gap-5 w-full hover:bg-white/[0.04] text-slate-500 hover:text-slate-100 px-5 py-4 rounded-2xl text-sm transition-all group\"
+                    className="flex items-center gap-5 w-full hover:bg-white/[0.04] text-slate-500 hover:text-slate-100 px-5 py-4 rounded-2xl text-sm transition-all group"
                   >
-                    <HelpCircle className=\"w-5 h-5 group-hover:text-blue-500 transition-colors\" />
-                    <span className=\"font-black tracking-widest uppercase text-[10px]\">Documentation</span>
+                    <HelpCircle className="w-5 h-5 group-hover:text-blue-500 transition-colors" />
+                    <span className="font-black tracking-widest uppercase text-[10px]">Documentation</span>
                   </button>
                 </div>
               </div>
             </motion.div>
 
             {/* Main Content */}
-            <div className=\"flex-1 flex flex-col h-full bg-[#050505] relative\">
+            <div className="flex-1 flex flex-col h-full bg-[#050505] relative">
               <AnimatePresence>
                 {showBootSequence && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className=\"absolute inset-0 z-50 flex items-center justify-center bg-black\"
+                    className="absolute inset-0 z-50 flex items-center justify-center bg-black"
                   >
-                    <div className=\"flex flex-col items-center\">
+                    <div className="flex flex-col items-center">
                       <motion.div 
                         animate={{ rotate: 360 }}
-                        transition={{ repeat: Infinity, duration: 4, ease: \"linear\" }}
-                        className=\"w-24 h-24 rounded-full border-b-4 border-t-4 border-[var(--accent)] mb-8 opacity-80\"
+                        transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+                        className="w-24 h-24 rounded-full border-b-4 border-t-4 border-[var(--accent)] mb-8 opacity-80"
                       />
                       <motion.p
                         key={bootText}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className=\"text-white font-mono text-xl tracking-[0.2em] uppercase max-w-lg text-center\"
+                        className="text-white font-mono text-xl tracking-[0.2em] uppercase max-w-lg text-center"
                       >
                         {bootText}
                       </motion.p>
@@ -1370,90 +1370,90 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
               </AnimatePresence>
 
               {/* Top Navigation */}
-              <div className=\"w-full h-20 flex items-center justify-between px-8 border-b border-white/[0.03] bg-black/20 backdrop-blur-3xl z-40\">
-                <div className=\"flex items-center gap-6\">
+              <div className="w-full h-20 flex items-center justify-between px-8 border-b border-white/[0.03] bg-black/20 backdrop-blur-3xl z-40">
+                <div className="flex items-center gap-6">
                   <button 
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    className=\"p-2.5 hover:bg-white/5 rounded-xl text-slate-500 hover:text-white transition-all\"
+                    className="p-2.5 hover:bg-white/5 rounded-xl text-slate-500 hover:text-white transition-all"
                   >
                     <motion.div initial={{ rotate: 180 }} animate={{ rotate: isSidebarOpen ? 0 : 180 }}>
-                      <ChevronRight className=\"w-6 h-6\" />
+                      <ChevronRight className="w-6 h-6" />
                     </motion.div>
                   </button>
-                  <div className=\"flex items-center gap-3\">
-                    <div className=\"w-5 h-5 rounded-md bg-blue-500/20 flex items-center justify-center p-1\">
-                      <Sparkles className=\"w-full h-full text-blue-400\" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded-md bg-blue-500/20 flex items-center justify-center p-1">
+                      <Sparkles className="w-full h-full text-blue-400" />
                     </div>
-                    <span className=\"text-white font-[900] tracking-[0.4em] text-[10px] uppercase opacity-90\">Astra Lumen II</span>
-                     {tier === 'premium' && <span className=\"px-2 py-1 rounded-md bg-yellow-500/20 text-yellow-400 text-[8px] font-black uppercase tracking-widest\">Premium</span>} 
+                    <span className="text-white font-[900] tracking-[0.4em] text-[10px] uppercase opacity-90">Astra Lumen II</span>
+                     {tier === 'premium' && <span className="px-2 py-1 rounded-md bg-yellow-500/20 text-yellow-400 text-[8px] font-black uppercase tracking-widest">Premium</span>} 
                   </div>
                 </div>
 
-                <div className=\"flex items-center gap-2\">
+                <div className="flex items-center gap-2">
                   <button 
                     onClick={() => setIsVoiceOutputEnabled(!isVoiceOutputEnabled)}
                     className={`p-3 rounded-xl transition-all ${isVoiceOutputEnabled ? 'text-blue-400 bg-blue-500/10' : 'text-slate-500 hover:text-white bg-white/5'}`}
-                    title={isVoiceOutputEnabled ? \"Disable Voice Output\" : \"Enable Voice Output\"}
+                    title={isVoiceOutputEnabled ? "Disable Voice Output" : "Enable Voice Output"}
                   >
-                    {isVoiceOutputEnabled ? <Volume2 className=\"w-5 h-5\" /> : <VolumeX className=\"w-5 h-5\" />}
+                    {isVoiceOutputEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
                   </button>
                   <button 
                     onClick={() => setIsSettingsOpen(true)}
-                    className=\"p-3 hover:bg-white/5 rounded-xl transition-all text-slate-500 hover:text-white\"
+                    className="p-3 hover:bg-white/5 rounded-xl transition-all text-slate-500 hover:text-white"
                   >
-                    <Settings className=\"w-5 h-5\" />
+                    <Settings className="w-5 h-5" />
                   </button>
                   <button
                     onClick={startNewSession}
-                    className=\"relative p-2.5 hover:bg-red-500/20 rounded-xl transition-all text-red-500 flex items-center gap-1.5\"
-                    title=\"Terminate Session\"
+                    className="relative p-2.5 hover:bg-red-500/20 rounded-xl transition-all text-red-500 flex items-center gap-1.5"
+                    title="Terminate Session"
                   >
                     <motion.div
                       animate={{
                         boxShadow: [
-                          \"0 0 0 0 rgba(239, 68, 68, 0.4)\",
-                          \"0 0 0 10px rgba(239, 68, 68, 0)\",
+                          "0 0 0 0 rgba(239, 68, 68, 0.4)",
+                          "0 0 0 10px rgba(239, 68, 68, 0)",
                         ],
                       }}
                       transition={{
                         duration: 1.5,
                         repeat: Infinity,
-                        repeatType: \"loop\",
+                        repeatType: "loop",
                       }}
-                      className=\"absolute inset-0 rounded-xl\"
+                      className="absolute inset-0 rounded-xl"
                     />
-                    <X className=\"w-5 h-5\" />
-                    <span className=\"text-[10px] font-black uppercase tracking-widest hidden sm:inline\">Terminate</span>
+                    <X className="w-5 h-5" />
+                    <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Terminate</span>
                   </button>
                 </div>
               </div>
 
               {/* Interaction View - Gemini Style Centered */}
-              <div className=\"flex-1 w-full flex flex-col items-center overflow-y-auto scrollbar-none px-6 py-12 h-0 relative scroll-smooth\" id=\"chat-scroll-container\">
-                <div className=\"w-full max-w-3xl space-y-12\">
+              <div className="flex-1 w-full flex flex-col items-center overflow-y-auto scrollbar-none px-6 py-12 h-0 relative scroll-smooth" id="chat-scroll-container">
+                <div className="w-full max-w-3xl space-y-12">
                   {messages.length === 0 ? (
                     <motion.div 
-                      key=\"welcome\"
+                      key="welcome"
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -30 }}
-                      className=\"py-20 text-center space-y-12\"
+                      className="py-20 text-center space-y-12"
                     >
-                      <div className=\"space-y-4\">
-                        <h1 className=\"text-4xl md:text-5xl font-black text-white tracking-tight leading-none bg-gradient-to-b from-white to-white/20 bg-clip-text text-transparent\">
+                      <div className="space-y-4">
+                        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-none bg-gradient-to-b from-white to-white/20 bg-clip-text text-transparent">
                           Scientific <br /> Intelligence.
                         </h1>
-                        <p className=\"text-slate-500 font-medium tracking-widest text-[9px] uppercase max-w-md mx-auto opacity-60\">
+                        <p className="text-slate-500 font-medium tracking-widest text-[9px] uppercase max-w-md mx-auto opacity-60">
                           Astra is Online & Ready to Help
                         </p>
                       </div>
 
-                      <div className=\"grid grid-cols-1 md:grid-cols-2 gap-3 pt-8\">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-8">
                         {[
-                          \"Explain Quantum Entanglement\",
-                          \"Synthesize CRISPR methodology\",
-                          \"Map the vector space of LLMs\",
-                          \"Relativistic time dilation laws\"
+                          "Explain Quantum Entanglement",
+                          "Synthesize CRISPR methodology",
+                          "Map the vector space of LLMs",
+                          "Relativistic time dilation laws"
                         ].map((prompt, i) => (
                           <motion.button
                             key={i}
@@ -1461,7 +1461,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 + 0.5 }}
                             onClick={() => setInput(prompt)}
-                            className=\"text-left px-6 py-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.05] hover:border-white/10 text-slate-400 hover:text-white transition-all text-sm font-medium\"
+                            className="text-left px-6 py-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.05] hover:border-white/10 text-slate-400 hover:text-white transition-all text-sm font-medium"
                           >
                             {prompt}
                           </motion.button>
@@ -1469,7 +1469,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                       </div>
                     </motion.div>
                   ) : (
-                    <div className=\"space-y-12 pb-40\">
+                    <div className="space-y-12 pb-40">
                       {messages.map((m, idx) => (
                         <motion.div 
                           key={m.id}
@@ -1480,18 +1480,18 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                         >
                           <div className={`max-w-[85%] ${m.role === 'user' ? 'bg-white/[0.05] px-6 py-4 rounded-3xl border border-white/5' : 'w-full'}`}>
                             {m.role === 'assistant' ? (
-                              <div className=\"flex gap-6\">
-                                <div className=\"w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center p-1.5 shrink-0 mt-1 relative\">
+                              <div className="flex gap-6">
+                                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center p-1.5 shrink-0 mt-1 relative">
                                   {m.role === 'assistant' && idx === messages.length - 1 && isAstraSpeaking && (
                                     <motion.div 
                                       animate={{ rotate: 360 }}
-                                      transition={{ repeat: Infinity, duration: 3, ease: \"linear\" }}
-                                      className=\"absolute -inset-1 rounded-lg border-2 border-green-500/40 border-t-transparent\"
+                                      transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                                      className="absolute -inset-1 rounded-lg border-2 border-green-500/40 border-t-transparent"
                                     />
                                   )}
-                                  <RobotIcon glow={m.isStreaming || (idx === messages.length - 1 && isAstraSpeaking)} variant=\"chat\" />
+                                  <RobotIcon glow={m.isStreaming || (idx === messages.length - 1 && isAstraSpeaking)} variant="chat" />
                                 </div>
-                                <div className=\"flex-1 min-w-0\">
+                                <div className="flex-1 min-w-0">
                                   <NeuralStream 
                                     content={m.content} 
                                     isStreaming={!!m.isStreaming} 
@@ -1503,51 +1503,51 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                                   {!m.isStreaming && <GroundingSources metadata={m.groundingMetadata} />}
                                   {!m.isStreaming && m.videoData && <YouTubeGallery videoData={m.videoData} />}
                                   {!m.isStreaming && m.content && (
-                                    <div className=\"mt-4 flex items-center gap-2\">
+                                    <div className="mt-4 flex items-center gap-2">
                                       <button 
                                         onClick={() => handleFeedback(m.id, 'up')}
                                         className={`p-2 rounded-lg transition-all ${m.feedback === 'up' ? 'bg-blue-500/20 text-blue-400' : 'text-slate-500 hover:bg-white/10 hover:text-white'}`}
                                       >
-                                        <ThumbsUp className=\"w-4 h-4\" />
+                                        <ThumbsUp className="w-4 h-4" />
                                       </button>
                                       <button 
                                         onClick={() => handleFeedback(m.id, 'down')}
                                         className={`p-2 rounded-lg transition-all ${m.feedback === 'down' ? 'bg-red-500/20 text-red-400' : 'text-slate-500 hover:bg-white/10 hover:text-white'}`}
                                       >
-                                        <ThumbsDown className=\"w-4 h-4\" />
+                                        <ThumbsDown className="w-4 h-4" />
                                       </button>
                                       <button 
                                         onClick={() => handleCopy(m.content, m.id)}
-                                        className=\"p-2 rounded-lg text-slate-500 hover:bg-white/10 hover:text-white transition-all\"
+                                        className="p-2 rounded-lg text-slate-500 hover:bg-white/10 hover:text-white transition-all"
                                       >
-                                        {copiedMessageId === m.id ? <Check className=\"w-4 h-4 text-green-500\" /> : <Copy className=\"w-4 h-4\" />}
+                                        {copiedMessageId === m.id ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                                       </button>
                                     </div>
                                   )}
                                 </div>
                               </div>
                             ) : (
-                              <div className=\"text-white font-medium text-lg leading-snug\">{m.content}</div>
+                              <div className="text-white font-medium text-lg leading-snug">{m.content}</div>
                             )}
                           </div>
                         </motion.div>
                       ))}
                       
                       {isAnalyzing && (
-                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className=\"flex gap-6\">
-                          <div className=\"w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center p-1.5 shrink-0 animate-pulse\">
-                            <RobotIcon glow variant=\"chat\" />
+                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex gap-6">
+                          <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center p-1.5 shrink-0 animate-pulse">
+                            <RobotIcon glow variant="chat" />
                           </div>
-                          <div className=\"space-y-4 pt-1\">
-                            <div className=\"flex items-center gap-3 text-[10px] font-black text-blue-500 tracking-[0.3em] uppercase opacity-60\">
-                              <Sparkles className=\"w-3 h-3 animate-spin-slow\" />
+                          <div className="space-y-4 pt-1">
+                            <div className="flex items-center gap-3 text-[10px] font-black text-blue-500 tracking-[0.3em] uppercase opacity-60">
+                              <Sparkles className="w-3 h-3 animate-spin-slow" />
                               <span>{analysisPhase}</span>
                             </div>
-                            <div className=\"w-48 h-1 bg-white/5 rounded-full overflow-hidden\">
+                            <div className="w-48 h-1 bg-white/5 rounded-full overflow-hidden">
                               <motion.div 
                                 animate={{ x: ['-100%', '200%'] }} 
-                                transition={{ duration: 1.5, repeat: Infinity, ease: \"linear\" }}
-                                className=\"w-1/2 h-full bg-blue-400 opacity-40 shadow-[0_0_10px_rgba(96,165,250,0.5)]\" 
+                                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                                className="w-1/2 h-full bg-blue-400 opacity-40 shadow-[0_0_10px_rgba(96,165,250,0.5)]" 
                               />
                             </div>
                           </div>
@@ -1555,45 +1555,45 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                       )}
                     </div>
                   )}
-                  <div ref={messagesEndRef} className=\"h-4\" />
+                  <div ref={messagesEndRef} className="h-4" />
                 </div>
               </div>
 
 
               {/* Input Area - Minimal Gemini Style */}
-              <div className=\"w-full max-w-3xl mx-auto px-4 sm:px-6 pt-3 flex-shrink-0\"
+              <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-3 flex-shrink-0"
                 style={{ paddingBottom: 'max(20px, calc(12px + env(safe-area-inset-bottom)))' }}
               >
                 <form 
                   onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-                  className=\"relative group\"
+                  className="relative group"
                 >
-                  <div className=\"bg-[#111] border border-white/10 focus-within:border-white/20 rounded-[32px] transition-all flex items-end p-2 pr-4 shadow-2xl\">
+                  <div className="bg-[#111] border border-white/10 focus-within:border-white/20 rounded-[32px] transition-all flex items-end p-2 pr-4 shadow-2xl">
                     <textarea 
                       rows={1}
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                      placeholder=\"Ask Astra...\"
-                      className=\"flex-1 bg-transparent border-none focus:ring-0 text-white placeholder:text-slate-600 py-5 px-6 resize-none min-h-[64px] max-h-48 scrollbar-none text-lg\"
+                      placeholder="Ask Astra..."
+                      className="flex-1 bg-transparent border-none focus:ring-0 text-white placeholder:text-slate-600 py-5 px-6 resize-none min-h-[64px] max-h-48 scrollbar-none text-lg"
                     />
-                    <div className=\"flex items-center gap-2 pb-2\">
+                    <div className="flex items-center gap-2 pb-2">
                        {/* Voice Input Toggle */}
                        <motion.button 
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        type=\"button\" 
+                        type="button" 
                         onClick={toggleListening}
                         className={`p-3 transition-all rounded-xl ${isListening ? 'text-red-500 bg-red-500/10' : 'text-slate-500 hover:text-white'}`}
-                        title={isListening ? \"Stop Listening\" : \"Voice Input\"}
+                        title={isListening ? "Stop Listening" : "Voice Input"}
                       >
-                        {isListening ? <MicOff className=\"w-5 h-5\" /> : <Mic className=\"w-5 h-5\" />}
+                        {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                       </motion.button>
 
                        <motion.button 
                         whileHover={{ scale: 1.1, backgroundColor: 'rgba(59,130,246,0.1)' }}
                         whileTap={{ scale: 0.95 }}
-                        type=\"button\" 
+                        type="button" 
                         onClick={() => {
                           if (isConversationMode) {
                             toggleConversationMode(false);
@@ -1602,17 +1602,17 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                           }
                         }}
                         className={`p-3.5 rounded-2xl border transition-all shadow-xl relative group/mic ${isConversationMode ? 'text-green-400 bg-green-500/10 border-green-500/30 ring-2 ring-green-500/20' : 'text-blue-400 bg-blue-500/5 border-blue-500/10'}`}
-                        title=\"Neural Voice Link\"
+                        title="Neural Voice Link"
                       >
                         <div className={`absolute inset-0 blur-xl opacity-0 group-hover/mic:opacity-100 transition-opacity ${isConversationMode ? 'bg-green-500/20' : 'bg-blue-500/10'}`} />
                         {isAstraSpeaking ? (
                            <motion.div 
                              animate={{ rotate: 360 }}
-                             transition={{ repeat: Infinity, duration: 2, ease: \"linear\" }}
-                             className=\"w-6 h-6 border-2 border-green-500 border-t-transparent rounded-full\"
+                             transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+                             className="w-6 h-6 border-2 border-green-500 border-t-transparent rounded-full"
                            />
                         ) : (
-                          <Volume2 className=\"w-6 h-6 relative z-10\" />
+                          <Volume2 className="w-6 h-6 relative z-10" />
                         )}
                         <motion.div 
                           animate={isConversationMode ? { scale: [1, 1.2, 1], opacity: [0.3, 0.1, 0.3] } : {}}
@@ -1621,7 +1621,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                         />
                       </motion.button>
                       <button 
-                        type=\"submit\"
+                        type="submit"
                         disabled={!input.trim() || isLoading}
                         className={`p-3 rounded-full transition-all ${
                           input.trim() && !isLoading 
@@ -1629,13 +1629,13 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                             : 'text-slate-700'
                         }`}
                       >
-                        <Send className=\"w-6 h-6\" />
+                        <Send className="w-6 h-6" />
                       </button>
                     </div>
                   </div>
                 </form>
-                <div className=\"text-center mt-4\">
-                  <p className=\"text-[10px] text-slate-700 font-[900] uppercase tracking-[0.3em] opacity-40\">
+                <div className="text-center mt-4">
+                  <p className="text-[10px] text-slate-700 font-[900] uppercase tracking-[0.3em] opacity-40">
                     Astra AI Assistant v3.0 | Online
                   </p>
                 </div>
@@ -1651,31 +1651,31 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className=\"fixed inset-0 z-[250] flex items-center justify-center p-6 md:p-12 pointer-events-none\"
+              className="fixed inset-0 z-[250] flex items-center justify-center p-6 md:p-12 pointer-events-none"
             >
-              <div className=\"w-full max-w-2xl bg-[#050505] border border-white/10 rounded-[48px] shadow-[0_60px_120px_rgba(0,0,0,1)] overflow-hidden flex flex-col pointer-events-auto backdrop-blur-3xl\">
-                <div className=\"h-24 px-10 border-b border-white/5 flex items-center justify-between bg-white/[0.02]\">
-                  <div className=\"flex items-center gap-5\">
-                    <div className=\"w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500\">
-                      <Settings className=\"w-6 h-6\" />
+              <div className="w-full max-w-2xl bg-[#050505] border border-white/10 rounded-[48px] shadow-[0_60px_120px_rgba(0,0,0,1)] overflow-hidden flex flex-col pointer-events-auto backdrop-blur-3xl">
+                <div className="h-24 px-10 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+                  <div className="flex items-center gap-5">
+                    <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500">
+                      <Settings className="w-6 h-6" />
                     </div>
-                    <h3 className=\"text-white font-black tracking-[0.2em] uppercase text-lg\">AI Configuration</h3>
+                    <h3 className="text-white font-black tracking-[0.2em] uppercase text-lg">AI Configuration</h3>
                   </div>
                   <button 
                     onClick={() => setIsSettingsOpen(false)}
-                    className=\"p-3 hover:bg-white/10 rounded-xl transition-all text-slate-500 hover:text-white\"
+                    className="p-3 hover:bg-white/10 rounded-xl transition-all text-slate-500 hover:text-white"
                   >
-                    <X className=\"w-6 h-6\" />
+                    <X className="w-6 h-6" />
                   </button>
                 </div>
                 
-                <div className=\"flex-1 overflow-y-auto p-10 scrollbar-none space-y-12\">
+                <div className="flex-1 overflow-y-auto p-10 scrollbar-none space-y-12">
                   {/* Neural Interaction Mode */}
-                  <div className=\"bg-white/[0.02] border border-white/5 rounded-3xl p-6\">
-                    <div className=\"flex items-center justify-between\">
+                  <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6">
+                    <div className="flex items-center justify-between">
                       <div>
-                        <h4 className=\"text-white font-black tracking-widest uppercase text-sm mb-1\">Conversation Mode</h4>
-                        <p className=\"text-[10px] text-slate-500 uppercase tracking-widest leading-relaxed\">
+                        <h4 className="text-white font-black tracking-widest uppercase text-sm mb-1">Conversation Mode</h4>
+                        <p className="text-[10px] text-slate-500 uppercase tracking-widest leading-relaxed">
                           Enables a casual, motivating, and interactive Astra persona.
                         </p>
                       </div>
@@ -1685,7 +1685,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                       >
                         <motion.div 
                           animate={{ x: isConversationMode ? 28 : 0 }}
-                          className=\"w-5 h-5 bg-white rounded-full shadow-lg\"
+                          className="w-5 h-5 bg-white rounded-full shadow-lg"
                         />
                       </button>
                     </div>
@@ -1693,8 +1693,8 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
 
                   {/* Persona Selection */}
                   <div>
-                    <h4 className=\"text-blue-500 font-black tracking-widest uppercase text-xs mb-6\">Scientific Persona</h4>
-                    <div className=\"grid grid-cols-2 gap-4\">
+                    <h4 className="text-blue-500 font-black tracking-widest uppercase text-xs mb-6">Scientific Persona</h4>
+                    <div className="grid grid-cols-2 gap-4">
                       {[
                         { id: 'Aoede', name: 'Intelligence', desc: 'Multilingual Scientific' },
                         { id: 'Kore', name: 'Nova', desc: 'Melodic Investigator' },
@@ -1713,66 +1713,66 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                           <span className={`font-black uppercase tracking-widest text-sm mb-1 ${voicePersona === persona.id ? 'text-blue-400' : 'group-hover:text-white'}`}>
                             {persona.name}
                           </span>
-                          <span className=\"text-[10px] opacity-60 uppercase tracking-widest\">{persona.desc}</span>
+                          <span className="text-[10px] opacity-60 uppercase tracking-widest">{persona.desc}</span>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   {/* Speech Parameters */}
-                  <div className=\"space-y-8\">
+                  <div className="space-y-8">
                     <div>
-                      <div className=\"flex justify-between items-center mb-6\">
-                        <h4 className=\"text-blue-500 font-black tracking-widest uppercase text-xs\">Transmission Rate</h4>
-                        <span className=\"text-white font-mono text-sm\">{speakingRate}x</span>
+                      <div className="flex justify-between items-center mb-6">
+                        <h4 className="text-blue-500 font-black tracking-widest uppercase text-xs">Transmission Rate</h4>
+                        <span className="text-white font-mono text-sm">{speakingRate}x</span>
                       </div>
                       <input 
-                        type=\"range\"
-                        min=\"0.5\"
-                        max=\"2.0\"
-                        step=\"0.1\"
+                        type="range"
+                        min="0.5"
+                        max="2.0"
+                        step="0.1"
                         value={speakingRate}
                         onChange={(e) => setSpeakingRate(parseFloat(e.target.value))}
-                        className=\"w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer accent-blue-500\"
+                        className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer accent-blue-500"
                       />
-                      <div className=\"flex justify-between mt-2 text-[10px] text-slate-600 font-bold uppercase tracking-widest\">
+                      <div className="flex justify-between mt-2 text-[10px] text-slate-600 font-bold uppercase tracking-widest">
                         <span>Largo</span>
                         <span>Presto</span>
                       </div>
                     </div>
 
                     <div>
-                      <div className=\"flex justify-between items-center mb-6\">
-                        <h4 className=\"text-blue-500 font-black tracking-widest uppercase text-xs\">Phonic Resonance</h4>
-                        <span className=\"text-white font-mono text-sm\">{speakingPitch}</span>
+                      <div className="flex justify-between items-center mb-6">
+                        <h4 className="text-blue-500 font-black tracking-widest uppercase text-xs">Phonic Resonance</h4>
+                        <span className="text-white font-mono text-sm">{speakingPitch}</span>
                       </div>
                       <input 
-                        type=\"range\"
-                        min=\"0.5\"
-                        max=\"1.5\"
-                        step=\"0.05\"
+                        type="range"
+                        min="0.5"
+                        max="1.5"
+                        step="0.05"
                         value={speakingPitch}
                         onChange={(e) => setSpeakingPitch(parseFloat(e.target.value))}
-                        className=\"w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer accent-blue-500\"
+                        className="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer accent-blue-500"
                       />
-                      <div className=\"flex justify-between mt-2 text-[10px] text-slate-600 font-bold uppercase tracking-widest\">
+                      <div className="flex justify-between mt-2 text-[10px] text-slate-600 font-bold uppercase tracking-widest">
                         <span>Gravitas</span>
                         <span>Ether</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className=\"pt-8 border-t border-white/5\">
-                    <p className=\"text-[10px] text-slate-700 leading-relaxed uppercase tracking-widest text-center\">
+                  <div className="pt-8 border-t border-white/5">
+                    <p className="text-[10px] text-slate-700 leading-relaxed uppercase tracking-widest text-center">
                       Voice parameters are applied in real-time during the next AI transmission.
                     </p>
                   </div>
                 </div>
                 
-                <div className=\"p-8 border-t border-white/5 bg-white/[0.01] flex justify-center\">
+                <div className="p-8 border-t border-white/5 bg-white/[0.01] flex justify-center">
                   <button 
                     onClick={() => setIsSettingsOpen(false)}
-                    className=\"bg-blue-600 hover:bg-blue-500 text-white font-black tracking-widest uppercase text-xs px-10 py-4 rounded-2xl transition-all shadow-[0_10px_30px_rgba(59,130,246,0.3)]\"
+                    className="bg-blue-600 hover:bg-blue-500 text-white font-black tracking-widest uppercase text-xs px-10 py-4 rounded-2xl transition-all shadow-[0_10px_30px_rgba(59,130,246,0.3)]"
                   >
                     Apply Config
                   </button>
@@ -1788,78 +1788,78 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className=\"fixed inset-0 z-[200] flex items-center justify-center p-6 md:p-12 pointer-events-none\"
+            className="fixed inset-0 z-[200] flex items-center justify-center p-6 md:p-12 pointer-events-none"
           >
-              <div className=\"w-full max-w-4xl max-h-[85vh] bg-[#050505] border border-white/10 rounded-[48px] shadow-[0_60px_120px_rgba(0,0,0,1)] overflow-hidden flex flex-col pointer-events-auto backdrop-blur-3xl\">
-                <div className=\"h-24 px-10 border-b border-white/5 flex items-center justify-between bg-white/[0.02]\">
-                  <div className=\"flex items-center gap-5\">
-                    <div className=\"w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500\">
-                      <HelpCircle className=\"w-6 h-6\" />
+              <div className="w-full max-w-4xl max-h-[85vh] bg-[#050505] border border-white/10 rounded-[48px] shadow-[0_60px_120px_rgba(0,0,0,1)] overflow-hidden flex flex-col pointer-events-auto backdrop-blur-3xl">
+                <div className="h-24 px-10 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+                  <div className="flex items-center gap-5">
+                    <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500">
+                      <HelpCircle className="w-6 h-6" />
                     </div>
-                    <h3 className=\"text-white font-black tracking-[0.2em] uppercase text-lg\">Astra Documentation v1.0</h3>
+                    <h3 className="text-white font-black tracking-[0.2em] uppercase text-lg">Astra Documentation v1.0</h3>
                   </div>
                   <button 
                     onClick={() => setIsGuideOpen(false)}
-                    className=\"p-3 hover:bg-white/10 rounded-xl transition-all text-slate-500 hover:text-white\"
+                    className="p-3 hover:bg-white/10 rounded-xl transition-all text-slate-500 hover:text-white"
                   >
-                    <X className=\"w-6 h-6\" />
+                    <X className="w-6 h-6" />
                   </button>
                 </div>
                 
-                <div className=\"flex-1 overflow-y-auto p-10 scrollbar-none\">
-                  <div className=\"prose prose-invert prose-lg max-w-none\">
-                    <div className=\"grid grid-cols-1 md:grid-cols-2 gap-12\">
+                <div className="flex-1 overflow-y-auto p-10 scrollbar-none">
+                  <div className="prose prose-invert prose-lg max-w-none">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                       <div>
-                        <h4 className=\"text-blue-500 font-black tracking-widest uppercase text-xs mb-4\">01. Astra Polymath</h4>
-                        <p className=\"text-slate-300 leading-relaxed font-medium\">
+                        <h4 className="text-blue-500 font-black tracking-widest uppercase text-xs mb-4">01. Astra Polymath</h4>
+                        <p className="text-slate-300 leading-relaxed font-medium">
                           Astra is a **Sophisticated Neural Mentor** architected for advanced academic inquiry. She balances **high-order scientific synthesis** with humanized, motivating interaction to ensure deep theoretical understanding.
                         </p>
                         
-                        <h4 className=\"text-blue-500 font-black tracking-widest uppercase text-xs mt-10 mb-4\">02. Theoretical Matrix</h4>
-                        <ul className=\"space-y-4 list-none p-0\">
-                          <li className=\"flex gap-4\">
-                            <div className=\"w-6 h-6 bg-white/5 rounded flex items-center justify-center shrink-0 text-blue-400 font-black text-[10px]\">A</div>
-                            <span className=\"text-sm text-slate-400\"><strong className=\"text-white\">Synthesist:</strong> Deep technical breakdown with high-level conceptual bridges.</span>
+                        <h4 className="text-blue-500 font-black tracking-widest uppercase text-xs mt-10 mb-4">02. Theoretical Matrix</h4>
+                        <ul className="space-y-4 list-none p-0">
+                          <li className="flex gap-4">
+                            <div className="w-6 h-6 bg-white/5 rounded flex items-center justify-center shrink-0 text-blue-400 font-black text-[10px]">A</div>
+                            <span className="text-sm text-slate-400"><strong className="text-white">Synthesist:</strong> Deep technical breakdown with high-level conceptual bridges.</span>
                           </li>
-                          <li className=\"flex gap-4\">
-                            <div className=\"w-6 h-6 bg-white/5 rounded flex items-center justify-center shrink-0 text-blue-400 font-black text-[10px]\">B</div>
-                            <span className=\"text-sm text-slate-400\"><strong className=\"text-white\">Empiricist:</strong> Focuses on empirical data, rigorous proof, and chemical precision.</span>
+                          <li className="flex gap-4">
+                            <div className="w-6 h-6 bg-white/5 rounded flex items-center justify-center shrink-0 text-blue-400 font-black text-[10px]">B</div>
+                            <span className="text-sm text-slate-400"><strong className="text-white">Empiricist:</strong> Focuses on empirical data, rigorous proof, and chemical precision.</span>
                           </li>
-                          <li className=\"flex gap-4\">
-                            <div className=\"w-6 h-6 bg-white/5 rounded flex items-center justify-center shrink-0 text-blue-400 font-black text-[10px]\">C</div>
-                            <span className=\"text-sm text-slate-400\"><strong className=\"text-white\">Visionary:</strong> Projects current scientific consensus into future horizons.</span>
+                          <li className="flex gap-4">
+                            <div className="w-6 h-6 bg-white/5 rounded flex items-center justify-center shrink-0 text-blue-400 font-black text-[10px]">C</div>
+                            <span className="text-sm text-slate-400"><strong className="text-white">Visionary:</strong> Projects current scientific consensus into future horizons.</span>
                           </li>
                         </ul>
                       </div>
                       
                       <div>
-                        <h4 className=\"text-blue-500 font-black tracking-widest uppercase text-xs mb-4\">03. Protocol Standards</h4>
-                        <div className=\"bg-white/[0.02] border border-white/5 rounded-3xl p-8 space-y-6\">
+                        <h4 className="text-blue-500 font-black tracking-widest uppercase text-xs mb-4">03. Protocol Standards</h4>
+                        <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-8 space-y-6">
                           <div>
-                            <div className=\"text-white font-bold mb-2 flex items-center gap-3\">
-                              <Plus className=\"w-4 h-4 text-blue-500\" />
+                            <div className="text-white font-bold mb-2 flex items-center gap-3">
+                              <Plus className="w-4 h-4 text-blue-500" />
                               Technical Prompting
                             </div>
-                            <p className=\"text-xs text-slate-500 leading-relaxed\">
-                              Request specific scientific domains or theoretical frameworks. Use commands like \"Synthesize the logic of...\" or \"Map the vector space of...\".
+                            <p className="text-xs text-slate-500 leading-relaxed">
+                              Request specific scientific domains or theoretical frameworks. Use commands like "Synthesize the logic of..." or "Map the vector space of...".
                             </p>
                           </div>
                           <div>
-                            <div className=\"text-white font-bold mb-2 flex items-center gap-3\">
-                              <History className=\"w-4 h-4 text-blue-500\" />
+                            <div className="text-white font-bold mb-2 flex items-center gap-3">
+                              <History className="w-4 h-4 text-blue-500" />
                               Neural Revision
                             </div>
-                            <p className=\"text-xs text-slate-500 leading-relaxed\">
+                            <p className="text-xs text-slate-500 leading-relaxed">
                               Leverage interaction logs to cross-reference previous theoretical breakthroughs.
                             </p>
                           </div>
-                          <div className=\"pt-4 border-t border-white/5\">
-                            <div className=\"flex items-center gap-3 text-[10px] font-black text-blue-500 tracking-widest uppercase\">
-                              <Sparkles className=\"w-3 h-3\" />
+                          <div className="pt-4 border-t border-white/5">
+                            <div className="flex items-center gap-3 text-[10px] font-black text-blue-500 tracking-widest uppercase">
+                              <Sparkles className="w-3 h-3" />
                               High-Intelligence Tip
                             </div>
-                            <p className=\"mt-2 text-[11px] text-slate-400 italic\">
-                              \"Inquire about a multidisciplinary bridge if a concept feels isolated. Scientific Intelligence will architect a neural link.\"
+                            <p className="mt-2 text-[11px] text-slate-400 italic">
+                              "Inquire about a multidisciplinary bridge if a concept feels isolated. Scientific Intelligence will architect a neural link."
                             </p>
                           </div>
                         </div>
@@ -1868,10 +1868,10 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                   </div>
                 </div>
                 
-                <div className=\"p-8 border-t border-white/5 bg-white/[0.01] flex justify-center\">
+                <div className="p-8 border-t border-white/5 bg-white/[0.01] flex justify-center">
                   <button 
                     onClick={() => setIsGuideOpen(false)}
-                    className=\"bg-blue-600 hover:bg-blue-500 text-white font-black tracking-widest uppercase text-xs px-10 py-4 rounded-2xl transition-all shadow-[0_10px_30px_rgba(59,130,246,0.3)]\"
+                    className="bg-blue-600 hover:bg-blue-500 text-white font-black tracking-widest uppercase text-xs px-10 py-4 rounded-2xl transition-all shadow-[0_10px_30px_rgba(59,130,246,0.3)]"
                   >
                     Synchronize Data & Close
                   </button>
@@ -1888,17 +1888,17 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className=\"fixed inset-0 z-[300] bg-black flex flex-col items-center justify-center overflow-hidden\"
+              className="fixed inset-0 z-[300] bg-black flex flex-col items-center justify-center overflow-hidden"
               style={{ padding: 'max(48px, env(safe-area-inset-top)) max(48px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(48px, env(safe-area-inset-left))' }}
             >
-              <div className=\"absolute left-8 sm:left-12\" style={{ top: 'max(48px, env(safe-area-inset-top))' }}>
-                <div className=\"flex flex-col gap-2\">
-                  <div className=\"flex items-center gap-4\">
-                    <div className=\"w-3 h-3 bg-red-500 rounded-full animate-pulse\" />
-                    <span className=\"text-white font-black tracking-[0.3em] uppercase text-xs opacity-50\">Neural Link Active</span>
+              <div className="absolute left-8 sm:left-12" style={{ top: 'max(48px, env(safe-area-inset-top))' }}>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-4">
+                    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                    <span className="text-white font-black tracking-[0.3em] uppercase text-xs opacity-50">Neural Link Active</span>
                   </div>
-                  <div className=\"flex items-center gap-4\">
-                    <History className=\"w-3 h-3 text-blue-500\" />
+                  <div className="flex items-center gap-4">
+                    <History className="w-3 h-3 text-blue-500" />
                     <span className={`font-mono text-xs tracking-widest ${conversationTimeLeft < 60 ? 'text-red-500 animate-pulse' : 'text-blue-400'}`}>
                       REMAINING: {formatTime(conversationTimeLeft)}
                     </span>
@@ -1908,16 +1908,16 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
 
               <button 
                 onClick={() => toggleConversationMode(false)}
-                className=\"absolute right-8 sm:right-12 p-4 min-w-[44px] min-h-[44px] bg-white/5 active:bg-white/20 hover:bg-white/10 rounded-full text-white transition-all hover:rotate-90\"
+                className="absolute right-8 sm:right-12 p-4 min-w-[44px] min-h-[44px] bg-white/5 active:bg-white/20 hover:bg-white/10 rounded-full text-white transition-all hover:rotate-90"
                 style={{ top: 'max(48px, env(safe-area-inset-top))' }}
               >
-                <X className=\"w-6 h-6\" />
+                <X className="w-6 h-6" />
               </button>
 
               {/* Gemini-style Astra Orb with Glow Ring */}
-              <div className=\"relative flex items-center justify-center w-full max-w-4xl h-[440px]\">
+              <div className="relative flex items-center justify-center w-full max-w-4xl h-[440px]">
                 {/* Background glow ring */}
-                <div className=\"absolute inset-0 flex items-center justify-center pointer-events-none\">
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <GeminiGlow
                     state={isAstraSpeaking ? 'speaking' : isAnalyzing ? 'thinking' : isListening ? 'listening' : 'idle'}
                     size={480}
@@ -1939,7 +1939,7 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
               </div>
 
               {/* Gemini waveform — glows during active states */}
-              <div className=\"w-full max-w-lg mx-auto px-8 -mt-4\">
+              <div className="w-full max-w-lg mx-auto px-8 -mt-4">
                 <GeminiWave
                   state={isAstraSpeaking ? 'speaking' : isAnalyzing ? 'thinking' : isListening ? 'listening' : 'idle'}
                   width={480}
@@ -1948,52 +1948,52 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
               </div>
 
               {/* Status text */}
-              <div className=\"mt-6 text-center max-w-2xl px-8\">
-                <AnimatePresence mode=\"wait\">
+              <div className="mt-6 text-center max-w-2xl px-8">
+                <AnimatePresence mode="wait">
                   {isAnalyzing ? (
                     <motion.div
-                      key=\"analyzing\"
+                      key="analyzing"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className=\"space-y-4\"
+                      className="space-y-4"
                     >
-                      <h2 className=\"text-white font-[900] text-2xl tracking-[0.4em] uppercase opacity-70\">Processing</h2>
-                      <p className=\"text-blue-400/50 font-black text-[10px] uppercase tracking-[0.5em]\">{analysisPhase}</p>
+                      <h2 className="text-white font-[900] text-2xl tracking-[0.4em] uppercase opacity-70">Processing</h2>
+                      <p className="text-blue-400/50 font-black text-[10px] uppercase tracking-[0.5em]">{analysisPhase}</p>
                     </motion.div>
                   ) : isAstraSpeaking ? (
                     <motion.div
-                      key=\"speaking\"
+                      key="speaking"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className=\"space-y-4\"
+                      className="space-y-4"
                     >
-                      <p className=\"text-[10px] font-black tracking-[0.8em] uppercase text-blue-400/40\">Astra Speaking</p>
-                      <p className=\"text-white/80 text-xl font-semibold tracking-tight leading-snug px-4 line-clamp-3\">
+                      <p className="text-[10px] font-black tracking-[0.8em] uppercase text-blue-400/40">Astra Speaking</p>
+                      <p className="text-white/80 text-xl font-semibold tracking-tight leading-snug px-4 line-clamp-3">
                         {messages[messages.length - 1]?.content.replace(/[#*`\[\]]/g, '').substring(0, 180)}
                       </p>
                     </motion.div>
                   ) : isListening ? (
                     <motion.div
-                      key=\"listening\"
+                      key="listening"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className=\"space-y-4\"
+                      className="space-y-4"
                     >
-                      <p className=\"text-[10px] font-black tracking-[0.8em] uppercase text-white/20\">Listening</p>
-                      <p className=\"text-blue-400 text-3xl font-black italic tracking-tight\">
-                        {input ? `\"${input}\"` : \"I'm listening...\"}
+                      <p className="text-[10px] font-black tracking-[0.8em] uppercase text-white/20">Listening</p>
+                      <p className="text-blue-400 text-3xl font-black italic tracking-tight">
+                        {input ? `"${input}"` : "I'm listening..."}
                       </p>
                     </motion.div>
                   ) : (
                     <motion.div
-                      key=\"idle\"
+                      key="idle"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className=\"space-y-6\"
+                      className="space-y-6"
                     >
                       <button
                         onClick={() => {
@@ -2003,16 +2003,16 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
                           if (audioContextRef.current?.state === 'suspended') audioContextRef.current.resume();
                           recognitionRef.current?.start();
                         }}
-                        className=\"group flex flex-col items-center gap-4\"
+                        className="group flex flex-col items-center gap-4"
                       >
                         <motion.div
                           whileHover={{ scale: 1.08 }}
                           whileTap={{ scale: 0.94 }}
-                          className=\"w-20 h-20 rounded-full border border-blue-500/30 bg-blue-600/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-all shadow-[0_0_40px_rgba(59,130,246,0.15)]\"
+                          className="w-20 h-20 rounded-full border border-blue-500/30 bg-blue-600/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-all shadow-[0_0_40px_rgba(59,130,246,0.15)]"
                         >
-                          <Mic className=\"w-9 h-9 text-blue-400\" />
+                          <Mic className="w-9 h-9 text-blue-400" />
                         </motion.div>
-                        <p className=\"text-white/60 font-black uppercase tracking-[0.4em] text-[11px]\">
+                        <p className="text-white/60 font-black uppercase tracking-[0.4em] text-[11px]">
                           {!hasInteracted ? 'Tap to Speak' : 'Resume'}
                         </p>
                       </button>
@@ -2022,16 +2022,16 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
               </div>
 
               {/* Status Footer */}
-              <div className=\"absolute bottom-8 flex items-center gap-8 sm:gap-12 text-slate-700 font-black tracking-widest uppercase text-[9px]\">
-                <div className=\"flex items-center gap-2\">
+              <div className="absolute bottom-8 flex items-center gap-8 sm:gap-12 text-slate-700 font-black tracking-widest uppercase text-[9px]">
+                <div className="flex items-center gap-2">
                   <div className={`w-1.5 h-1.5 rounded-full transition-all ${isAstraSpeaking ? 'bg-blue-500 shadow-[0_0_6px_rgba(59,130,246,1)]' : 'bg-slate-800'}`} />
                   Output
                 </div>
-                <div className=\"flex items-center gap-2\">
+                <div className="flex items-center gap-2">
                   <div className={`w-1.5 h-1.5 rounded-full transition-all ${isListening ? 'bg-red-500 shadow-[0_0_6px_rgba(239,68,68,1)]' : 'bg-slate-800'}`} />
                   Input
                 </div>
-                <div className=\"flex items-center gap-2\">
+                <div className="flex items-center gap-2">
                   <div className={`w-1.5 h-1.5 rounded-full transition-all ${isAnalyzing ? 'bg-white shadow-[0_0_6px_rgba(255,255,255,1)]' : 'bg-slate-800'}`} />
                   Neural
                 </div>
@@ -2058,14 +2058,14 @@ const scrollToBottom = (behavior: ScrollBehavior = 'smooth') => {
           onStateChangeRef.current?.(next);
         }}
         style={{ display: hideToggle ? 'none' : undefined, bottom: 'max(40px, calc(16px + env(safe-area-inset-bottom)))', right: 'max(40px, calc(safe-area-inset-right))' }}
-        className=\"fixed z-[140] w-20 h-20 sm:w-24 sm:h-24 rounded-[36px] sm:rounded-[40px] bg-black border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,1)] flex items-center justify-center transition-all group overflow-hidden\"
-        id=\"toggle-astra\"
+        className="fixed z-[140] w-20 h-20 sm:w-24 sm:h-24 rounded-[36px] sm:rounded-[40px] bg-black border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,1)] flex items-center justify-center transition-all group overflow-hidden"
+        id="toggle-astra"
       >
-        <div className=\"absolute inset-0 bg-blue-500/5 group-hover:bg-blue-500/20 transition-all opacity-0 group-hover:opacity-100 duration-500\" />
-        <div className=\"w-20 h-20 p-1\">
-          <RobotIcon glow={isAnalyzing} variant=\"button\" />
+        <div className="absolute inset-0 bg-blue-500/5 group-hover:bg-blue-500/20 transition-all opacity-0 group-hover:opacity-100 duration-500" />
+        <div className="w-20 h-20 p-1">
+          <RobotIcon glow={isAnalyzing} variant="button" />
         </div>
-        <div className=\"absolute top-5 right-5 w-4 h-4 bg-blue-500 rounded-full border-[4px] border-black group-hover:scale-150 transition-transform shadow-[0_0_20px_rgba(59,130,246,1)]\" />
+        <div className="absolute top-5 right-5 w-4 h-4 bg-blue-500 rounded-full border-[4px] border-black group-hover:scale-150 transition-transform shadow-[0_0_20px_rgba(59,130,246,1)]" />
       </motion.button>
     </>
   );

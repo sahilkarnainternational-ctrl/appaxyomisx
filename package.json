@@ -3,20 +3,22 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "pnpm --filter axyomis run build",
+    "build": "pnpm --filter \"@workspace/*\" run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
-    "start:server": "node server.js"
+    "start:server": "node server.js",
+    "start:frontend": "pnpm --filter axyomis run dev"
   },
   "private": true,
   "dependencies": {
     "express": "^4.18.2",
-    "groq-sdk": "^0.4.0"
+    "groq-sdk": "^0.4.0",
+    "child_process": "^1.0.2"
   },
   "devDependencies": {
     "prettier": "^3.8.3",
     "serve": "^14.2.0",
-    "typescript": "catalog:",
-    "vite": "catalog:"
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0"
   }
 }

@@ -1,6 +1,11 @@
-import { Router } from "express";
-import nodemailer from "nodemailer";
-const router = Router();
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const router = (0, express_1.Router)();
 router.post("/send-report", async (req, res) => {
     const { to, parentName, studentName, reportHtml, reportText } = req.body;
     if (!to || !reportHtml) {
@@ -17,7 +22,7 @@ router.post("/send-report", async (req, res) => {
         return;
     }
     try {
-        const transporter = nodemailer.createTransport({
+        const transporter = nodemailer_1.default.createTransport({
             service: "gmail",
             auth: { user: gmailUser, pass: gmailPass },
         });
@@ -36,4 +41,4 @@ router.post("/send-report", async (req, res) => {
         res.status(500).json({ success: false, message: `Failed to send: ${err.message}. Try copying the report instead.` });
     }
 });
-export default router;
+exports.default = router;

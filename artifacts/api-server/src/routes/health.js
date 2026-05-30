@@ -1,8 +1,10 @@
-import { Router } from "express";
-import { HealthCheckResponse } from "@workspace/api-zod";
-const router = Router();
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const api_zod_1 = require("@workspace/api-zod");
+const router = (0, express_1.Router)();
 router.get("/healthz", (_req, res) => {
-    const data = HealthCheckResponse.parse({ status: "ok" });
+    const data = api_zod_1.HealthCheckResponse.parse({ status: "ok" });
     res.json(data);
 });
-export default router;
+exports.default = router;
