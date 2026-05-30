@@ -1,5 +1,5 @@
-const { Router } = require("express");
-const axios = require("axios");
+import { Router } from "express";
+import axios from "axios";
 
 const router = Router();
 
@@ -110,4 +110,4 @@ router.post("/youtube", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
