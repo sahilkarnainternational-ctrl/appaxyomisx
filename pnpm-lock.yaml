@@ -33,9 +33,6 @@ importers:
 
   artifacts/api-server:
     dependencies:
-      '@google/generative-ai':
-        specifier: ^0.14.1
-        version: 0.14.1
       '@workspace/api-zod':
         specifier: workspace:*
         version: link:../../lib/api-zod
@@ -60,6 +57,9 @@ importers:
       express:
         specifier: ^5.0.0-beta.1
         version: 5.2.1
+      groq-sdk:
+        specifier: ^0.5.0
+        version: 0.5.0
       nodemailer:
         specifier: ^8.0.7
         version: 8.0.9
@@ -1357,10 +1357,6 @@ packages:
     peerDependenciesMeta:
       '@modelcontextprotocol/sdk':
         optional: true
-
-  '@google/generative-ai@0.14.1':
-    resolution: {integrity: sha512-pevEyZCb0Oc+dYNlSberW8oZBm4ofeTD5wN01TowQMhTwdAbGAnJMtQzoklh6Blq2AKsx8Ox6FWa44KioZLZiA==}
-    engines: {node: '>=18.0.0'}
 
   '@grpc/grpc-js@1.9.16':
     resolution: {integrity: sha512-wE4Ut/olIzfKqp631XrG+wbF0v1vWFN4YL9FyXC2LJiG33DsV7PLzURjrCvY/6je2ntdRkeLpPDluzSRGaVltQ==}
@@ -3909,6 +3905,9 @@ packages:
 
   groq-sdk@0.4.0:
     resolution: {integrity: sha512-h79q9sv4hcOBESR05N5eqHlGhAug9H9lr3EIiB+37ysWWekeG+KYQDK2lIIHYCm6O9LzgZzO/VdLdPP298+T0w==}
+
+  groq-sdk@0.5.0:
+    resolution: {integrity: sha512-RVmhW7qZ+XZoy5fIuSdx/LGQJONpL8MHgZEW7dFwTdgkzStub2XQx6OKv28CHogijdwH41J+Npj/z2jBPu3vmw==}
 
   hachure-fill@0.5.2:
     resolution: {integrity: sha512-3GKBOn+m2LX9iq+JC1064cSFprJY4jL1jCXTcpnfER5HYE2l/4EfWSGzkPa/ZDBmYI0ZOEj5VHV/eKnPGkHuOg==}
@@ -6516,8 +6515,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-
-  '@google/generative-ai@0.14.1': {}
 
   '@grpc/grpc-js@1.9.16':
     dependencies:
@@ -9199,6 +9196,19 @@ snapshots:
   graceful-fs@4.2.11: {}
 
   groq-sdk@0.4.0:
+    dependencies:
+      '@types/node': 18.19.130
+      '@types/node-fetch': 2.6.13
+      abort-controller: 3.0.0
+      agentkeepalive: 4.6.0
+      form-data-encoder: 1.7.2
+      formdata-node: 4.4.1
+      node-fetch: 2.7.0
+      web-streams-polyfill: 3.3.3
+    transitivePeerDependencies:
+      - encoding
+
+  groq-sdk@0.5.0:
     dependencies:
       '@types/node': 18.19.130
       '@types/node-fetch': 2.6.13

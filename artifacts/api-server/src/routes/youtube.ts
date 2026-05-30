@@ -71,7 +71,7 @@ router.post("/youtube-multilingual", async (req, res) => {
 router.post("/youtube", async (req, res) => {
   try {
     const { query } = req.body as { query: string };
-    const apiKey = process.env.YOUTUBE_API_KEnpmY;
+    const apiKey = process.env.YOUTUBE_API_KEY;
     if (!apiKey) {
       console.error("YouTube API Key not configured");
       res.status(500).json({ error: "YouTube API Key not configured" });
