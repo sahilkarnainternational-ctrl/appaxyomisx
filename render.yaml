@@ -15,7 +15,7 @@ services:
     plan: free
     env: static
     buildCommand: pnpm --filter=@workspace/axyomis run build
-    staticPublishPath: ./artifacts/axyomis/dist/public
+    staticPublishPath: ./artifacts/axyomis/dist
     routes:
       - type: rewrite
         source: /api/*
