@@ -111,10 +111,15 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), 'dist');
+    const CWD = process.cwd();
+    console.log('Current Working Directory:', CWD);
+    const distPath = path.join(CWD, 'dist');
+    console.log('Serving static files from:', distPath);
     app.use(express.static(distPath));
     app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+      const indexPath = path.join(distPath, 'index.html');
+      console.log('Serving index.html from:', indexPath);
+      res.sendFile(indexPath);
     });
   }
 
