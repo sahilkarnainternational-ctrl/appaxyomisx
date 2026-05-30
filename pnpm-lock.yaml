@@ -51,6 +51,9 @@ importers:
       cors:
         specifier: ^2.8.6
         version: 2.8.6
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.6.1
       drizzle-orm:
         specifier: ^0.30.0
         version: 0.30.10(@types/pg@8.20.0)(@types/react@19.2.15)(pg@8.21.0)(react@19.1.0)
@@ -85,9 +88,6 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.6.1
       esbuild:
         specifier: 0.25.8
         version: 0.25.8
