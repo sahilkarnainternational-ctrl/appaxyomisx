@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "pnpm --filter \"@workspace/*\" run build",
-    "render-build": "pnpm --filter @workspace/api-server run build && pnpm --filter @workspace/axyomis run build",
+    "render-build": "npm install --prefix Axyomis-X && npm run --prefix Axyomis-X build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
     "start:server": "node server.js",
