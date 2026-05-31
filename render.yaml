@@ -1,13 +1,27 @@
 services:
-  - type: web
-    name: appaxyomisx
+  - name: axyomis-api
+    type: web
     env: node
     plan: free
-    region: ohio
-    buildCommand: |
-      cd Axyomis-X
-      npm install
-      npm run build
-    startCommand: |
-      cd Axyomis-X
-      npm start
+    # This build command should correctly build the API for deployment.
+    buildCommand: pnpm install && pnpm --filter=@workspace/api-server run build
+    startCommand: pnpm --filter=@workspace/api-server run start
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      # YOUTUBE_API_KEY should be added in Render's environment variables section
+
+  - name: axyomis-chatbot
+    type: web
+    plan: free
+    env: client
+    # Assuming 'react-example' is the correct package name for the frontend in your monorepo
+    # and its build script correctly outputs to artifacts/axyomis/dist/public
+    buildCommand: pnpm install && pnpm --filter=react-example run build
+    # This path should match where 'vite build' outputs the static assets.
+    # Based on DEPLOYMENT.md, it should be artifacts/axyomis/dist/public
+    staticPublishPath: ./artifacts/axyomis/dist/public
+    routes:
+      - type: rewrite
+        source: /api/(.*)
+        destination: https://axyomis-api.onrender.com/api/$1
