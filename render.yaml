@@ -14,10 +14,8 @@ services:
     type: web
     plan: free
     env: client
-    # This command directly invokes Vite to build the frontend assets.
-    # It assumes 'vite build' is configured in the package.json of the 'react-example' package
-    # and outputs to the directory specified in staticPublishPath.
-    buildCommand: pnpm install && cd Axyomis-X && pnpm run build
+    # Ensure esbuild is installed and then run the build command.
+    buildCommand: pnpm install --filter=react-example && pnpm add -D esbuild && cd Axyomis-X && pnpm run build
     staticPublishPath: ./artifacts/axyomis/dist/public
     routes:
       - type: rewrite
