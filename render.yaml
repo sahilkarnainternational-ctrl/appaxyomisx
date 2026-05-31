@@ -1,23 +1,22 @@
 services:
-  - name: axyomis-api
-    type: web
-    env: node
-    plan: free
-    buildCommand: pnpm install && pnpm --filter=@workspace/api-server run build
-    startCommand: pnpm --filter=@workspace/api-server run start
-    envVars:
-      - key: GROQ_API_KEY
-        sync: false
-      # YOUTUBE_API_KEY should be added in Render's environment variables section
-
-  - name: axyomis-chatbot
-    type: web
-    plan: free
-    env: client
-    # Ensure esbuild is installed and then run the build command.
-    buildCommand: pnpm install --filter=react-example && pnpm add -D esbuild && cd Axyomis-X && pnpm run build
-    staticPublishPath: ./artifacts/axyomis/dist/public
-    routes:
-      - type: rewrite
-        source: /api/(.*)
-        destination: https://axyomis-api.onrender.com/api/$1
+- name: appaxyomisx
+  region: Ohio (US East)
+  plan: free
+  buildCommand: pnpm install && pnpm run render-build
+  buildCommandOnRestart: pnpm install && pnpm run render-build
+  rootDirectory: artifacts/axyomis
+  startCommand: pnpm --filter axyomis exec serve -s dist/public
+  repo: https://github.com/sahilkarnainternational-ctrl/appaxyomisx
+  branch: main
+  autoDeployHook: https://api.render.com/deploy/trigger/••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+  env:
+  - name: NODE_VERSION
+    value: 22.13.0
+  - name: GEMINI_API_KEY
+    sync: false
+  - name: BASE_PATH
+    value: /
+  - name: NODE_ENV
+    value: production
+kind:Webservice
+yamlVersion:1
