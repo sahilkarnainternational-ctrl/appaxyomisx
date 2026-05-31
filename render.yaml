@@ -3,7 +3,6 @@ services:
     type: web
     env: node
     plan: free
-    # This build command should correctly build the API for deployment.
     buildCommand: pnpm install && pnpm --filter=@workspace/api-server run build
     startCommand: pnpm --filter=@workspace/api-server run start
     envVars:
@@ -15,11 +14,10 @@ services:
     type: web
     plan: free
     env: client
-    # Assuming 'react-example' is the correct package name for the frontend in your monorepo
-    # and its build script correctly outputs to artifacts/axyomis/dist/public
-    buildCommand: pnpm install && pnpm --filter=react-example run build
-    # This path should match where 'vite build' outputs the static assets.
-    # Based on DEPLOYMENT.md, it should be artifacts/axyomis/dist/public
+    # This command directly invokes Vite to build the frontend assets.
+    # It assumes 'vite build' is configured in the package.json of the 'react-example' package
+    # and outputs to the directory specified in staticPublishPath.
+    buildCommand: pnpm install && cd Axyomis-X && pnpm run build
     staticPublishPath: ./artifacts/axyomis/dist/public
     routes:
       - type: rewrite
